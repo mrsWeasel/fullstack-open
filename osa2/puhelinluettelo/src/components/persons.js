@@ -6,7 +6,7 @@ const Persons = ({persons, showPerson}) => {
         {persons.map(person => (
           showPerson(person.name) &&
           <p key={person.name}>
-            {person.name} {person.phonenumber}
+            {person.name} {person.number}
           </p>
         ))}
       </div>
