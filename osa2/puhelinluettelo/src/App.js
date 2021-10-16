@@ -63,6 +63,9 @@ const App = () => {
       .then(response => {
         setPersons(persons.filter(p => p.id !== id))
       })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   return (
