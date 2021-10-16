@@ -44,15 +44,26 @@ const App = () => {
       return
     }
 
-    setPersons(
-      persons.concat({
-        name: newName.trim(),
-        phonenumber: newPhonenumber.trim(),
-      })
-    )
+    // setPersons(
+    //   persons.concat({
+    //     name: newName.trim(),
+    //     number: newPhonenumber.trim(),
+    //   })
+    // )
 
-    setNewName('')
-    setNewPhonenumber('')
+    const personObject = {
+      name: newName.trim(),
+      number: newPhonenumber.trim()
+    }
+
+    axios
+      .post('http://localhost:3001/persons', personObject)
+      .then(response => {
+        console.log(response)
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewPhonenumber('')
+      })
   }
 
   return (
