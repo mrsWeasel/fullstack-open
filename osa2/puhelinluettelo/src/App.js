@@ -44,13 +44,6 @@ const App = () => {
       return
     }
 
-    // setPersons(
-    //   persons.concat({
-    //     name: newName.trim(),
-    //     number: newPhonenumber.trim(),
-    //   })
-    // )
-
     const personObject = {
       name: newName.trim(),
       number: newPhonenumber.trim()
