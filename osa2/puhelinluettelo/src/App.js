@@ -58,6 +58,13 @@ const App = () => {
 
   }
 
+  const handleDeletePerson = id => {
+    personService.remove(id)
+      .then(response => {
+        setPersons(persons.filter(p => p.id !== id))
+      })
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -71,7 +78,7 @@ const App = () => {
 
       <h2>Numbers</h2>
       <FilteringForm value={filteringCondition} onChange={handleChangeFilteringCondition} />
-      <Persons persons={persons} showPerson={showPerson} />
+      <Persons persons={persons} showPerson={showPerson} deletePerson={handleDeletePerson} />
 
     </div>
   )
