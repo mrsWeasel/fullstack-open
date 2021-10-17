@@ -6,11 +6,11 @@ const Notification = ({ type, message }) => {
     let backgroundColor = ''
     
     if (type === TYPEERROR) {
-        backgroundColor = 'red'
+        backgroundColor = '#FECBCB'
     }
 
     if (type === TYPESUCCESS) {
-        backgroundColor = 'green'
+        backgroundColor = '#D2FEDC'
     }
 
     const styles = {

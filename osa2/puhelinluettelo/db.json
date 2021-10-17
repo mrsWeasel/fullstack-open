@@ -1,9 +1,19 @@
 {
   "persons": [
     {
-      "name": "Laura",
-      "number": "8",
-      "id": 1
+      "name": "Joulutonttu",
+      "number": "0504038989",
+      "id": 5
+    },
+    {
+      "name": "Joulumuori",
+      "number": "333-666",
+      "id": 6
+    },
+    {
+      "name": "Joulunuori",
+      "number": "12345",
+      "id": 7
     }
   ]
 }

@@ -7,6 +7,12 @@ import Notification from './components/notification'
 
 
 const App = () => {
+  const containerStyles = {
+    fontFamily: 'Courier, monospace',
+    maxWidth: 320,
+    margin: '0 auto'
+  }
+
   const TYPENONE = ''
   const TYPEERROR = 'error'
   const TYPESUCCESS = 'success'
@@ -119,9 +125,10 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div style={containerStyles}>
       {status.type !== TYPENONE && <Notification type={status.type} message={status.message}/> }
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <h2>Add person</h2>
       <PersonForm
         handleAddNewPerson={handleAddNewPerson}
         handleSetNewName={handleSetNewName}

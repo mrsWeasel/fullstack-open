@@ -1,6 +1,21 @@
 import React from 'react'
 
 const PersonForm = props => {
+  const labelStyles = {
+    display: 'block'
+  }
+
+  const inputStyles = {
+    display: 'block',
+    width: '100%',
+    padding: 8,
+    boxSizing: 'border-box',
+    marginBottom: 16,
+    borderColor: '#333',
+    borderWidth: 0,
+    borderBottomWidth: 1
+  }
+
   const {
     handleAddNewPerson,
     handleSetNewName,
@@ -12,13 +27,13 @@ const PersonForm = props => {
   return (
     <form onSubmit={handleAddNewPerson}>
       <div>
-        <label style={{ fontWeight: 'bold' }}>
-          Name: <input value={newName} onChange={handleSetNewName} />
+        <label style={labelStyles}>
+          Name: <input style={inputStyles} value={newName} onChange={handleSetNewName} />
         </label>
 
-        <label style={{ fontWeight: 'bold' }}>
+        <label style={labelStyles}>
           Number:{' '}
-          <input value={newPhonenumber} onChange={handleSetNewPhonenumber} />
+          <input style={inputStyles} value={newPhonenumber} onChange={handleSetNewPhonenumber} />
         </label>
       </div>
       <div>
