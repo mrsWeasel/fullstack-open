@@ -2,13 +2,8 @@
   "persons": [
     {
       "name": "Anna",
-      "number": "089",
+      "number": "000000000",
       "id": 6
-    },
-    {
-      "name": "Uusityyppi",
-      "number": "9",
-      "id": 8
     },
     {
       "name": "Uusi2",
@@ -16,9 +11,14 @@
       "id": 9
     },
     {
+      "name": "Ldfsdf",
+      "number": "888",
+      "id": 11
+    },
+    {
       "name": "Laura",
-      "number": "999",
-      "id": 10
+      "number": "000000000000000000000",
+      "id": 12
     }
   ]
 }
