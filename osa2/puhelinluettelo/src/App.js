@@ -60,12 +60,16 @@ const App = () => {
     ) {
       const updatedPerson = { ...person, number: newPhonenumber.trim() }
       console.log(updatedPerson.number, updatedPerson.name, updatedPerson.id)
-      personService.update(person.id, updatedPerson).then((response) => {
+      personService.update(person.id, updatedPerson)
+      .then((response) => {
         setNewName('')
         setNewPhonenumber('')
         setPersons(
           persons.map((p) => (p.id === updatedPerson.id ? updatedPerson : p))
         )
+      })
+      .catch((error) => {
+        alert(error)
       })
       return
     }
@@ -85,7 +89,7 @@ const App = () => {
         setPersons(persons.filter((p) => p.id !== id))
       })
       .catch((error) => {
-        console.log(error)
+        alert(error)
       })
   }
 
