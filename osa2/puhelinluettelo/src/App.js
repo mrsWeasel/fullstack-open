@@ -32,29 +32,46 @@ const App = () => {
 
   const handleSetNewPhonenumber = event => setNewPhonenumber(event.target.value)
 
+  
+
   const handleAddNewPerson = event => {
     event.preventDefault()
 
     if (newName.trim().length < 1) return
 
-    if (persons.find(person => person.name === newName)) {
-      alert(`${newName} is already added to phonebook.`)
-      setNewName('')
-      setNewPhonenumber('')
-      return
-    }
+    const person = persons.find(p => p.name === newName)
 
-    const personObject = {
-      name: newName.trim(),
-      number: newPhonenumber.trim()
-    }
-
-    personService.create(personObject)
-      .then(response => {
-        setPersons(persons.concat(response.data))
+    if (person) {
+      if (window.confirm(`${newName} is already added to phonebook. Do you want to replace the old number with the new one?`)) {
+              
+        const updatedPerson = { ...person, number : newPhonenumber.trim() }
+        console.log(updatedPerson.number, updatedPerson.name, updatedPerson.id)
+        personService.update(person.id, updatedPerson)
+          .then(response => {
+            setNewName('')
+            setNewPhonenumber('')
+            setPersons(persons.map(p => p.id === updatedPerson.id ? updatedPerson : p))
+          }) 
+      } else {
         setNewName('')
         setNewPhonenumber('')
-      })
+        return
+      }
+    } else {
+      const newPerson = {
+        name: newName.trim(),
+        number: newPhonenumber.trim()
+      }
+  
+      personService.create(newPerson)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewPhonenumber('')
+        })
+    }
+
+
 
   }
 

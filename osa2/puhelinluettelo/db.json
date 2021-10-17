@@ -2,8 +2,23 @@
   "persons": [
     {
       "name": "Anna",
-      "number": "2342335",
+      "number": "089",
       "id": 6
+    },
+    {
+      "name": "Uusityyppi",
+      "number": "9",
+      "id": 8
+    },
+    {
+      "name": "Uusi2",
+      "number": "99",
+      "id": 9
+    },
+    {
+      "name": "Laura",
+      "number": "999",
+      "id": 10
     }
   ]
 }
