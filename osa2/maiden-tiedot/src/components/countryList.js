@@ -1,3 +1,5 @@
+import SingleCountry from './singleCountry'
+
 const CountryList = ({ searchString, filteredCountries, filterSingle }) => {
     const ulStyles = {
         paddingLeft : 0
@@ -30,30 +32,7 @@ const CountryList = ({ searchString, filteredCountries, filterSingle }) => {
   }
 
   if (filteredCountries.length === 1) {
-      const country = filteredCountries[0]
-      const languages = country.languages
-      const flag = country.flags.png
-      
-      let languageList = []
-
-      for (const key in languages) {
-         languageList.push(languages[key])
-      }
-    
-      return (
-          <div>
-              <h3>{country.name.common}</h3>
-              <p>Capital: {country.capital[0]}</p>
-              <p>Population: {country.population}</p>
-              <h4>Languages</h4>
-              <ul>
-                 {
-                     languageList.map(lang => <li key={lang}>{lang}</li>)
-                 }
-              </ul>
-              <img style={{ border : '1px solid #dbdbdb' }} width='100' alt='' src={flag}/>
-          </div>
-      )
+    return <SingleCountry country={filteredCountries[0]}/>
   }
 
   if (filteredCountries.length > 10) {
