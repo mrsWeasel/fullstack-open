@@ -1,30 +1,11 @@
 import { useEffect, useState } from 'react'
 import countryService from './services/countries'
-
-const countryList = (filteredCountries) => {
-  
-  if (filteredCountries.length > 10) {
-    return (
-      <p>Too many results</p>
-    )
-  }
-
-  if (filteredCountries) {
-    return (
-      <ul>
-      {
-        filteredCountries.map(country => <li key={country.name.common}>{country.name.common}</li>)
-      }
-    </ul>
-    )
-  }
-
-  return
-}
+import CountryList from './components/countryList'
 
 function App() {
   const [countries, setCountries] = useState([])
   const [filteredCountries, setFilteredCountries] = useState([])
+  const [searchString, setSearchString] = useState('')
 
   const containerStyles = {
     fontFamily: 'Courier, monospace',
@@ -49,7 +30,7 @@ function App() {
 
   useEffect(() => {
     countryService
-      .getAll(5000)
+      .getAll(10000)
       .then((response) => {
         setCountries(response.data)
       })
@@ -58,20 +39,32 @@ function App() {
       })
   }, [])
 
-  const handleSearch = (event) => {
-    console.log(event.target.value)
-    const searchString = event.target.value.toLowerCase()
-
+  const handleSearch = (searchString) => {
+    setSearchString(searchString)
+    console.log(searchString, 'searchString')
     setFilteredCountries(
       countries.filter((country) =>
         (
           country.altSpellings.join().toLowerCase().includes(searchString) ||
           country.name.common.toLowerCase().includes(searchString)
+          
         )
       )
     )
-    console.log(countries.length)
-    console.log(filteredCountries.length)
+    
+    console.log(searchString, filteredCountries.length, countries.length)
+  }
+
+  const filterSingle = (country) => {
+    
+    setFilteredCountries(
+      countries.filter((c) =>
+        (
+          c.name.common === country
+          
+        )
+      )
+    )
   }
 
   return (
@@ -80,7 +73,7 @@ function App() {
       <label style={labelStyles}>
         Country name:
         <input
-          onChange={(e) => handleSearch(e)}
+          onChange={(e) => handleSearch(e.target.value)}
           style={inputStyles}
           type="text"
         />
@@ -88,8 +81,7 @@ function App() {
       <div>
         <h2>Results:</h2>
         
-        {countryList(filteredCountries)} 
-        
+        <CountryList searchString={searchString} filteredCountries={filteredCountries} filterSingle={filterSingle}/>
         
       </div>
     </div>
