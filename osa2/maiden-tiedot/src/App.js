@@ -43,28 +43,18 @@ function App() {
     setSearchString(searchString)
     console.log(searchString, 'searchString')
     setFilteredCountries(
-      countries.filter((country) =>
-        (
+      countries.filter(
+        (country) =>
           country.altSpellings.join().toLowerCase().includes(searchString) ||
           country.name.common.toLowerCase().includes(searchString)
-          
-        )
       )
     )
-    
+
     console.log(searchString, filteredCountries.length, countries.length)
   }
 
   const filterSingle = (country) => {
-    
-    setFilteredCountries(
-      countries.filter((c) =>
-        (
-          c.name.common === country
-          
-        )
-      )
-    )
+    setFilteredCountries(countries.filter((c) => c.name.common === country))
   }
 
   return (
@@ -80,9 +70,12 @@ function App() {
       </label>
       <div>
         <h2>Results:</h2>
-        
-        <CountryList searchString={searchString} filteredCountries={filteredCountries} filterSingle={filterSingle}/>
-        
+
+        <CountryList
+          searchString={searchString}
+          filteredCountries={filteredCountries}
+          filterSingle={filterSingle}
+        />
       </div>
     </div>
   )
