@@ -20,8 +20,8 @@ const Persons = ({ persons, showPerson, deletePerson }) => {
       {persons.map(
         (person) =>
           showPerson(person.name) && (
-            <div style={containerStyles}>
-              <p style={paragraphStyles} key={person.name}>
+            <div style={containerStyles} key={person.id}>
+              <p style={paragraphStyles}>
                 <span style={boldStyles}>{person.name}:</span> {person.number}
               </p>
               <button style={buttonStyles} onClick={() => deletePerson(person.id)}>Delete</button>

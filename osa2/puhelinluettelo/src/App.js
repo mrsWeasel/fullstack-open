@@ -47,8 +47,6 @@ const App = () => {
   const handleAddNewPerson = (event) => {
     event.preventDefault()
 
-    if (newName.trim().length < 1) return
-
     const person = persons.find((p) => p.name === newName)
 
     if (!person) {
@@ -57,15 +55,23 @@ const App = () => {
         number: newPhonenumber.trim(),
       }
 
-      personService.create(newPerson).then((response) => {
-        setPersons(persons.concat(response.data))
-        setNewName('')
-        setNewPhonenumber('')
-        setStatus({ type : TYPESUCCESS, message : 'New person was added successfully.'})
-        setTimeout(() => {
-          setStatus({ type : TYPENONE, message : ''})
-        }, 4000)
-      })
+      personService.create(newPerson)
+        .then((response) => {
+          setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewPhonenumber('')
+          setStatus({ type : TYPESUCCESS, message : 'New person was added successfully.'})
+          setTimeout(() => {
+            setStatus({ type : TYPENONE, message : ''})
+          }, 4000)
+        })
+        .catch((error) => {
+          setStatus({ type : TYPEERROR, message : error.response.data.error})
+          console.log(error.response.data.error)
+          setTimeout(() => {
+            setStatus({ type : TYPENONE, message : ''})
+          }, 4000)
+        })
       return
     }
 
@@ -89,7 +95,8 @@ const App = () => {
         }, 4000)
       })
       .catch((error) => {
-        setStatus({ type : TYPEERROR, message : `There was an error updating phonenumber of ${person.name}.`})
+        setStatus({ type : TYPEERROR, message : error.response.data.error})
+        console.log(error.response.data.error)
         setTimeout(() => {
           setStatus({ type : TYPENONE, message : ''})
         }, 4000)
