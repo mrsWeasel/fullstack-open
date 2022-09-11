@@ -3,3 +3,5 @@
 **/.DS_Store
 **/api_keys.txt
 osa3
+**/.env
+**/requests
