@@ -76,6 +76,25 @@ test('if title field is missing, respond with 400 bad request', async () => {
 
 })
 
+test('blog can be deleted', async () => {
+    await api
+        .delete('/api/blogs/5a422bc61b54a676234d17fc')
+        .expect(204)
+
+        const response = await api.get('/api/blogs')
+        expect(response.body).toHaveLength(4)  
+
+})
+
+test('blog can be updated', async () => {
+    await api
+        .patch('/api/blogs/5a422bc61b54a676234d17fc')
+        .send({ likes : 25 })
+
+        const response = await api.get('/api/blogs')
+        console.log(response)   
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
