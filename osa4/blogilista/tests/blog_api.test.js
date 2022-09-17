@@ -34,23 +34,46 @@ test('blogs have "id" field', async () => {
 })
 
 test('blog can be added', async () => {
-    let newBlog = new Blog(listWithOneBlog[0])
-    await newBlog.save()
+    let newBlog = listWithOneBlog[0]
+    
+    await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
 
     const response = await api.get('/api/blogs')
     expect(response.body).toHaveLength(6)
 })
 
 test('if likes are not defined, default to 0', async () => {
-    let blogWithoutLikes = Object.assign(listWithOneBlog[0])
-    delete blogWithoutLikes.likes
 
-    let newBlog = new Blog(blogWithoutLikes)
-    
-    await newBlog.save()
+    const blogWithoutLikes = {
+        title: "How to survive the modern world of dating",
+        author: "Daisy Duck",
+        url: "http://www.daisyduck.com",
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(blogWithoutLikes)
+        .expect(201)
 
     const response = await api.get('/api/blogs')
     expect(response.body[5].likes).toBe(0)
+})
+
+test('if title field is missing, respond with 400 bad request', async () => {
+    const blogWithoutTitle = {
+        author: "Duck Avenger",
+        url: "http://www.duckaveger.com",
+        likes: 8,
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(blogWithoutTitle)
+        .expect(400)
+
 })
 
 afterAll(() => {
