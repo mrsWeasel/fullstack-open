@@ -24,8 +24,13 @@ test('blogs are returned as json', async () => {
 
 test('there are 6 blogs', async () => {
     const response = await api.get('/api/blogs')
-
     expect(response.body).toHaveLength(6)
+})
+
+test('blogs have "id" field', async () => {
+    const response = await api.get('/api/blogs')
+
+    expect(response.body[0].id).toBeDefined()
 })
 
 afterAll(() => {
