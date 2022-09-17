@@ -1,5 +1,5 @@
 const listHelper = require('../utils/list_helper')
-const { listWithOneBlog, listWithSixBlogs } = require('./test_data')
+const { listWithOneBlog, listWithFiveBlogs } = require('./test_data')
 
 
 test('dummy returns one', () => {
@@ -24,15 +24,15 @@ describe('total likes', () => {
 
   test('get total likes when bloglist has 6 blogs', () => {
 
-    const result = listHelper.totalLikes(listWithSixBlogs)
-    expect(result).toBe(36)
+    const result = listHelper.totalLikes(listWithFiveBlogs)
+    expect(result).toBe(29)
   })
 })
 
 describe('favorite blog', () => {
   test('get blog with most likes', () => {
 
-    const result = listHelper.favoriteBlog(listWithSixBlogs)
+    const result = listHelper.favoriteBlog(listWithFiveBlogs)
     expect(result).toEqual(
       {
         _id: "5a422b3a1b54a676234d17f9",
