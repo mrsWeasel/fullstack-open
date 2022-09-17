@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
-const { listWithSixBlogs } = require('./test_data')
+const { listWithOneBlog, listWithSixBlogs } = require('./test_data')
 
 const api = supertest(app)
 
@@ -31,6 +31,14 @@ test('blogs have "id" field', async () => {
     const response = await api.get('/api/blogs')
 
     expect(response.body[0].id).toBeDefined()
+})
+
+test('blog can be added', async () => {
+    let newBlog = new Blog(listWithOneBlog)
+    await newBlog.save()
+
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(7)
 })
 
 afterAll(() => {
