@@ -3,13 +3,12 @@ const usersRouter = require('express').Router()
 const User = require('../models/user')
 
 usersRouter.get('/', async (request, response, next) => {
-    User.find({})
-        .then(users => {
-            response.json(users)
-        })
-        .catch(error => {
-            next(error)
-        })
+    try {
+        const users = await User.find({}).populate('blogs', { title : 1, author : 1, url : 1 })
+        response.json(users)
+    } catch (error) {
+        next(error)
+    }
 })
 
 usersRouter.post('/', async (request, response, next) => {
@@ -19,15 +18,15 @@ usersRouter.post('/', async (request, response, next) => {
         // check that username does not exist
         const existingUser = await User.findOne({ username })
         if (existingUser) {
-            const err = { name : 'ValidationError', message: 'Username must be unique'}
+            const err = { name: 'ValidationError', message: 'Username must be unique' }
             next(err)
         }
 
         // validate password
         if (password.length < 3) {
-            const err = { name : 'ValidationError', message: 'Password does not meet requirements'}
+            const err = { name: 'ValidationError', message: 'Password does not meet requirements' }
             next(err)
-        } 
+        }
 
         const saltRounds = 10
         const passwordHash = await bcrypt.hash(password, saltRounds)
