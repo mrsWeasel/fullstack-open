@@ -92,7 +92,6 @@ test('blog can be updated', async () => {
         .send({ likes : 25 })
 
         const response = await api.get('/api/blogs')
-        console.log(response)   
 })
 
 afterAll(() => {

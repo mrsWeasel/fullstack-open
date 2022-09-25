@@ -2,32 +2,49 @@ const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 
-usersRouter.get('/', async (request, response) => {
+usersRouter.get('/', async (request, response, next) => {
     User.find({})
-    .then(users => {
-        response.json(users)
-    })
-    .catch(error => {
-        console.log(error.message)
-    })
+        .then(users => {
+            response.json(users)
+        })
+        .catch(error => {
+            next(error)
+        })
 })
 
-usersRouter.post('/', async (request, response) => {
-    const { name, username, password } = request.body
+usersRouter.post('/', async (request, response, next) => {
+    try {
+        const { name, username, password } = request.body
 
-    const saltRounds = 10
-    const passwordHash = await bcrypt.hash(password, saltRounds)
-    console.log(passwordHash)
+        // check that username does not exist
+        const existingUser = await User.findOne({ username })
+        if (existingUser) {
+            const err = { name : 'ValidationError', message: 'Username must be unique'}
+            next(err)
+        }
 
-    const user = new User({
-        name,
-        username,
-        passwordHash,
-    })
+        // validate password
+        if (password.length < 3) {
+            const err = { name : 'ValidationError', message: 'Password does not meet requirements'}
+            next(err)
+        } 
 
-    const savedUser = await user.save()
+        const saltRounds = 10
+        const passwordHash = await bcrypt.hash(password, saltRounds)
 
-    response.status(201).json(savedUser)
+        const user = new User({
+            name,
+            username,
+            passwordHash,
+        })
+
+        const savedUser = await user.save()
+
+        response.status(201).json(savedUser)
+    } catch (error) {
+        next(error)
+    }
+
 })
 
 module.exports = usersRouter

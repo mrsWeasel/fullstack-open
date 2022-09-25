@@ -2,18 +2,18 @@ const blogRouter = require('express').Router()
 const { response } = require('../app')
 const Blog = require('../models/blog')
 
-blogRouter.get('/', (request, response) => {
+blogRouter.get('/', (request, response, error) => {
     Blog
         .find({})
         .then(blogs => {
             response.json(blogs)
         })
         .catch(error => {
-            console.log(error.message)
+            next(error)
         })
 })
 
-blogRouter.post('/', (request, response) => {
+blogRouter.post('/', (request, response, next) => {
     const blog = new Blog(request.body)
     blog
         .save()
@@ -21,24 +21,21 @@ blogRouter.post('/', (request, response) => {
             response.status(201).json(result)
         })
         .catch(error => {
-            console.log(error.message)
-            if (error.message.includes('validation failed')) {
-                response.status(400).json(error)
-            }
+            next(error)
         })
 })
 
-blogRouter.delete('/:id', (request, response) => {
+blogRouter.delete('/:id', (request, response, next) => {
     Blog.findByIdAndRemove(request.params.id)
     .then((result) => {
         response.status(204).end()
     })
     .catch(error => {
-        console.log(error.message)
+        next(error)
     })
 })
 
-blogRouter.patch('/:id', (request, response) => {
+blogRouter.patch('/:id', (request, response, next) => {
     const { likes } = request?.body || {}
 
     const blog = { likes }
@@ -48,7 +45,7 @@ blogRouter.patch('/:id', (request, response) => {
         response.json(updatedBlog)
     })
     .catch(error => {
-        console.log(error)
+        next(error)
     })    
 })
 
