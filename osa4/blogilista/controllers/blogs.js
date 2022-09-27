@@ -13,16 +13,11 @@ blogRouter.post('/', async (request, response, next) => {
         })
     }
     try {
-        const decodedToken = jwt.verify(token, process.env.SECRET)
-        const { username } = decodedToken
-        console.log(username)
-        const user = await User.findOne({ username })
-        blog.user = user.id
-        console.log(user.id)
+        blog.user = request?.user
 
         const savedBlog = await blog.save()
-        user.blogs = user.blogs.concat(savedBlog.id)
-        await user.save()
+        blog.user.blogs = blog.user.blogs.concat(savedBlog.id)
+        await blog.user.save()
 
         response.status(201).json(savedBlog)
     } catch (error) {
@@ -59,16 +54,16 @@ blogRouter.delete('/:id', async (request, response, next) => {
         })
     }
     try {
-        const decodedToken = jwt.verify(token, process.env.SECRET)
+        const user = request.user
         const blog = await Blog.findById(request.params.id)
 
         if (!blog) {
             return response.status(404).json({
                 error: 'resource not found'
             })
-        } 
+        }
 
-        const match = decodedToken.id.toString() === blog?.user?.toString()
+        const match = user?.id.toString() === blog?.user?.toString()
         if (!match) {
             return response.status(401).json({
                 error: 'unauthorized'
@@ -77,7 +72,6 @@ blogRouter.delete('/:id', async (request, response, next) => {
     } catch (error) {
         next(error)
     }
-
 
     Blog.findByIdAndRemove(request.params.id)
         .then((result) => {
