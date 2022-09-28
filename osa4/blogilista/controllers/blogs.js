@@ -85,9 +85,9 @@ blogRouter.delete('/:id', async (request, response, next) => {
 blogRouter.patch('/:id', (request, response, next) => {
     const { likes } = request?.body || {}
 
-    const blog = { likes }
+    const update = {likes}
 
-    Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+    Blog.findByIdAndUpdate(request.params.id, update, { new: true })
         .then(updatedBlog => {
             response.json(updatedBlog)
         })

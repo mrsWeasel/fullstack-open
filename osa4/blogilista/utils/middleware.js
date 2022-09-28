@@ -41,12 +41,9 @@ const userExtractor = async (request, response, next) => {
   const authorization = request.get('authorization')
   
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    console.log(authorization)
     const decodedToken = jwt.verify(authorization.substring(7), process.env.SECRET)
     const { username } = decodedToken
-    console.log(username)
     const user = await User.findOne({ username })
-    console.log(user)
     request.user = user
     } 
   
