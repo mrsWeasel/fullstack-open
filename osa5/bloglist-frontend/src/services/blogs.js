@@ -45,26 +45,45 @@ const createBlog = async (blog) => {
 
   }
   catch (error) {
-    const data = { errorMessage: error?.code }
+    const data = { errorMessage: error.code }
+    return data
+  }
+}
+
+const deleteBlog = async (blog) => {
+  const url = baseUrl + '/' + blog.id
+
+  const userJSON = window.localStorage.getItem('loggedInBlogUser')
+  const user = JSON.parse(userJSON)
+  const token = setToken(user.token)
+  console.log(token)
+  const config = {
+    headers: {
+      authorization: token
+    }
+  }
+
+  try {
+    const response = await axios
+      .delete(url, config)
+      if (!response?.data) {
+        return { errorMessage: 'response data error' }
+      }
+      return response.data  
+  }
+  catch(error) {
+    const data = { errorMessage: error.code }
     return data
   }
 }
 
 const likeBlog = async (blog) => {
   const updatedBlog = {...blog, likes: blog.likes + 1}
-  const userJSON = window.localStorage.getItem('loggedInBlogUser')
-  const user = JSON.parse(userJSON)
-  const token = setToken(user.token)
 
-  const config = {
-    headers: {
-      authorization: token
-    }
-  }
   const url = baseUrl + '/' + blog.id
   try {
     const response = await axios  
-      .patch(url, updatedBlog, config)
+      .patch(url, updatedBlog)
 
       if (!response?.data) {
         return { errorMessage: 'response data error' }
@@ -84,6 +103,7 @@ const blogService = {
   getAllBlogs,
   createBlog,
   likeBlog,
+  deleteBlog
 }
 
 export default blogService

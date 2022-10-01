@@ -26,8 +26,10 @@ const App = () => {
   }
 
   useEffect(() => {
-    blogService.getAllBlogs().then(blogs =>
+    blogService.getAllBlogs().then(blogs => {
+      blogs.sort((a,b) => {return a.likes - b.likes})
       setBlogs(blogs)
+    }
     )
   }, [])
 
@@ -54,7 +56,6 @@ const App = () => {
     setBlogs(updatedBlogs)
 
 }
-
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -90,12 +91,19 @@ const App = () => {
     }
   }
 
-  // const handleAddLike = (blog) => async () => {
-  //   console.log('like', blog?.title)
-  //   const data = await blogService.likeBlog(blog)
+  const handleDelete = (blog) => async () => {
+    console.log('delete', blog?.title)
+    const data = await blogService.deleteBlog(blog)
 
-  //   console.log(data)
-  // }
+    if (data.errorMessage) {
+      console.log(data.errorMessage)
+      handleShowErrorMessage(`Error removing ${blog.title}: ${data.errorMessage}`)
+      return
+    }
+
+    const updatedBlogs = blogs.filter(b => b.id !== blog.id)
+    setBlogs(updatedBlogs)
+  }
 
   const renderError = () => {
     return <div style={{ border: '2px solid red', padding: 16 }}>{errorMessage}</div>
@@ -112,7 +120,7 @@ const App = () => {
         <p>{user.name} logged in</p>
         <button onClick={handleLogout}>Logout</button>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog}/>
+          <Blog key={blog.id} blog={blog} handleDelete={handleDelete(blog)}/>
         )}
       </div>
     )

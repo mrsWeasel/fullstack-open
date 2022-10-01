@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import blogService from "../services/blogs"
 import Togglable from "./Togglable"
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleDelete }) => {
   const [likes, setLikes] = useState(0)
 
   useEffect(() => {
@@ -34,9 +34,10 @@ const Blog = ({ blog }) => {
         <ul>
           <li>Url: <a href={blog.url}>{blog.url}</a></li>
           <li>Likes: {likes} <button onClick={handleAddLike}>Like</button></li>
+          <li>Id: {blog?.id}</li>
           {blog?.user?.name && <li>User: {blog.user.name}</li>}
         </ul>
-
+        <button style={{background: 'tomato', color: 'white'}} onClick={handleDelete}>Remove</button>
       </Togglable>
     </div>
   )
