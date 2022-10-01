@@ -1,7 +1,35 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
 import Blog from './components/Blog'
+import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
+
+
+
+const Togglable = forwardRef((props, ref) => {
+  const [visible, setVisible] = useState(false)
+  const contentDisplayStyle = { display: visible ? 'block' : 'none'}
+
+  const toggleVisibility = () => {
+    setVisible(!visible)
+  }
+
+  useImperativeHandle(ref, () => {
+    return {
+      toggleVisibility
+    }
+  })
+
+  return (
+    <div>
+      {!visible && <button onClick={toggleVisibility}>Show / hide</button>}
+      <div style={contentDisplayStyle}>
+        {props.children}
+        <button onClick={toggleVisibility}>Cancel</button>
+      </div>
+    </div>
+  )
+})
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -13,6 +41,8 @@ const App = () => {
   const [url, setUrl] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+
+  const createBlogFormRef = useRef()
 
   const handleShowErrorMessage = (message) => {
     setErrorMessage(message)
@@ -72,7 +102,7 @@ const App = () => {
       handleShowErrorMessage(`Error creating blog: ${data.errorMessage}`)
       return
     }
-
+    createBlogFormRef.current.toggleVisibility()
     handleShowSuccessMessage(`Blog '${data.title}' created successfully!`)
     const updatedBlogs = [...blogs, data]
     setBlogs(updatedBlogs)
@@ -119,25 +149,7 @@ const App = () => {
           Url:
           <input type='text' id='url' value={url || ''} onChange={handleInputChange} />
         </label>
-
-        <input type='submit' />
-      </form>
-    )
-  }
-
-  const renderLoginForm = () => {
-    return (
-      <form onSubmit={handleLogin}>
-        <label>
-          Username:
-          <input type='text' id='username' value={username || ''} onChange={handleInputChange} />
-        </label>
-
-        <label>
-          Password:
-          <input type='password' id='password' value={password || ''} onChange={handleInputChange} />
-        </label>
-
+        <br />
         <input type='submit' />
       </form>
     )
@@ -164,12 +176,13 @@ const App = () => {
         <>
           {renderBlogs()}
           <h3>Create new blog</h3>
-          {renderCreateBlogForm()}
+          <Togglable buttonLabel='Create new blog' ref={createBlogFormRef}>
+            {renderCreateBlogForm()}
+          </Togglable>
         </>
         :
-        <>
-          {renderLoginForm()}
-        </>
+      
+          <LoginForm username={username} password={password} handleLogin={handleLogin} handleInputChange={handleInputChange} />
       }
     </div>
   )
