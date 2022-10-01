@@ -7,15 +7,27 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('') 
+  const [password, setPassword] = useState('')
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+
+  const handleShowErrorMessage = (message) => {
+    setErrorMessage(message)
+    setTimeout(() => { setErrorMessage('') }, 4000)
+  }
+
+  const handleShowSuccessMessage = (message) => {
+    setSuccessMessage(message)
+    setTimeout(() => { setSuccessMessage('') }, 4000)
+  }
 
   useEffect(() => {
     blogService.getAllBlogs().then(blogs =>
-      setBlogs( blogs )
-    )  
+      setBlogs(blogs)
+    )
   }, [])
 
   useEffect(() => {
@@ -32,8 +44,10 @@ const App = () => {
 
     if (data.errorMessage) {
       console.log(data.errorMessage)
+      handleShowErrorMessage(`Error logging in: ${data.errorMessage}`)
       return
     }
+    handleShowSuccessMessage(`Logged in successfully! Welcome ${data?.name}!`)
 
     window.localStorage.setItem(
       'loggedInBlogUser', JSON.stringify(data)
@@ -55,8 +69,11 @@ const App = () => {
 
     if (data.errorMessage) {
       console.log(data.errorMessage)
+      handleShowErrorMessage(`Error creating blog: ${data.errorMessage}`)
       return
     }
+
+    handleShowSuccessMessage(`Blog '${data.title}' created successfully!`)
     const updatedBlogs = [...blogs, data]
     setBlogs(updatedBlogs)
 
@@ -68,13 +85,21 @@ const App = () => {
   const handleInputChange = (event) => {
     const { id, value } = event?.target || {}
     switch (id) {
-      case 'username' : return setUsername(value)
-      case 'password' : return setPassword(value)
-      case 'title' : return setTitle(value)
-      case 'author' : return setAuthor(value)
-      case 'url' : return setUrl(value)
-      default : return null
+      case 'username': return setUsername(value)
+      case 'password': return setPassword(value)
+      case 'title': return setTitle(value)
+      case 'author': return setAuthor(value)
+      case 'url': return setUrl(value)
+      default: return null
     }
+  }
+
+  const renderError = () => {
+    return <div style={{ border: '2px solid red', padding: 16 }}>{errorMessage}</div>
+  }
+
+  const renderSuccess = () => {
+    return <div style={{ border: '2px solid green', padding: 16 }}>{successMessage}</div>
   }
 
   const renderCreateBlogForm = () => {
@@ -82,17 +107,17 @@ const App = () => {
       <form onSubmit={handleCreateBlog}>
         <label>
           Title:
-          <input type='text' id='title' value={title|| ''} onChange={handleInputChange}/>
+          <input type='text' id='title' value={title || ''} onChange={handleInputChange} />
         </label>
-        <br/>
+        <br />
         <label>
           Author:
-          <input type='text' id='author' value={author || ''} onChange={handleInputChange}/>
+          <input type='text' id='author' value={author || ''} onChange={handleInputChange} />
         </label>
-        <br/>
+        <br />
         <label>
           Url:
-          <input type='text' id='url' value={url || ''} onChange={handleInputChange}/>
+          <input type='text' id='url' value={url || ''} onChange={handleInputChange} />
         </label>
 
         <input type='submit' />
@@ -101,16 +126,16 @@ const App = () => {
   }
 
   const renderLoginForm = () => {
-    return(
+    return (
       <form onSubmit={handleLogin}>
         <label>
           Username:
-          <input type='text' id='username' value={username || ''} onChange={handleInputChange}/>
+          <input type='text' id='username' value={username || ''} onChange={handleInputChange} />
         </label>
 
         <label>
           Password:
-          <input type='password' id='password' value={password || ''} onChange={handleInputChange}/>
+          <input type='password' id='password' value={password || ''} onChange={handleInputChange} />
         </label>
 
         <input type='submit' />
@@ -132,20 +157,24 @@ const App = () => {
   }
 
   return (
-    user ? 
-      <>
-      {renderBlogs()}
-      <h3>Create new blog</h3> 
-      {renderCreateBlogForm()}
-      </>
-    :
-      <>
-      {renderLoginForm()}
-      </>
-
+    <div>
+      {errorMessage && renderError()}
+      {successMessage && renderSuccess()}
+      {user ?
+        <>
+          {renderBlogs()}
+          <h3>Create new blog</h3>
+          {renderCreateBlogForm()}
+        </>
+        :
+        <>
+          {renderLoginForm()}
+        </>
+      }
+    </div>
   )
 
-  
+
 }
 
 export default App
