@@ -105,6 +105,7 @@ const App = () => {
         <p>{user.name} logged in</p>
         <button onClick={handleLogout}>Logout</button>
         {blogs.map(blog =>
+          // {console.log(blog)}
           <Blog key={blog.id} blog={blog} />
         )}
       </div>
@@ -118,7 +119,7 @@ const App = () => {
       {user ?
         <>
           {renderBlogs()}
-          <Togglable buttonLabel='Create new blog' ref={createBlogFormRef}>
+          <Togglable buttonLabel='Create new blog' useCancel={1} ref={createBlogFormRef}>
             <CreateBlogForm handleShowErrorMessage={handleShowErrorMessage} handleShowSuccessMessage={handleShowSuccessMessage} handleCreateBlog={handleCreateBlog} />
           </Togglable>
         </>
