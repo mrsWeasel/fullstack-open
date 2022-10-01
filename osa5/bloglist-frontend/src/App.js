@@ -90,6 +90,13 @@ const App = () => {
     }
   }
 
+  // const handleAddLike = (blog) => async () => {
+  //   console.log('like', blog?.title)
+  //   const data = await blogService.likeBlog(blog)
+
+  //   console.log(data)
+  // }
+
   const renderError = () => {
     return <div style={{ border: '2px solid red', padding: 16 }}>{errorMessage}</div>
   }
@@ -105,8 +112,7 @@ const App = () => {
         <p>{user.name} logged in</p>
         <button onClick={handleLogout}>Logout</button>
         {blogs.map(blog =>
-          // {console.log(blog)}
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog}/>
         )}
       </div>
     )
