@@ -8,8 +8,7 @@ const login = async (username, password) => {
             username,
             password
         })
-
-        return data
+        return data?.data
     }
     catch (error) {
         const data = {error}
