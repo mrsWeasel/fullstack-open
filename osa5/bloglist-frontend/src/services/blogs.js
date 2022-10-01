@@ -23,7 +23,7 @@ const getAllBlogs = async () => {
   }
 }
 
-const createBlog = async (title, author, url) => {
+const createBlog = async (blog) => {
   const userJSON = window.localStorage.getItem('loggedInBlogUser')
   const user = JSON.parse(userJSON)
   const token = setToken(user.token)
@@ -37,12 +37,7 @@ const createBlog = async (title, author, url) => {
 
   try {
     const response = await axios
-      .post(baseUrl, {
-        title,
-        author,
-        url
-      }, 
-      config)
+      .post(baseUrl, blog, config)
 
 
     if (!response?.data) {
