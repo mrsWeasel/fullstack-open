@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react"
-import blogService from "../services/blogs"
-import Togglable from "./Togglable"
+import { useEffect, useState } from 'react'
+import blogService from '../services/blogs'
+import Togglable from './Togglable'
 
 const Blog = ({ blog, handleDelete }) => {
   const [likes, setLikes] = useState(0)
 
   useEffect(() => {
-    setLikes(blog?.likes)
-  }, [blog?.likes])
+    setLikes(blog?.likes ?? 0)
+  }, [blog])
 
-  const handleAddLike = async (event) => {
+  const handleAddLike = async () => {
     console.log('liked', blog?.title, likes)
     setLikes(0)
-    const updatedBlog = {...blog, likes}
+    const updatedBlog = { ...blog, likes }
     const data = await blogService.likeBlog(updatedBlog)
 
     if (!data || data.likes === undefined) {
@@ -23,7 +23,7 @@ const Blog = ({ blog, handleDelete }) => {
     if (data.errorMessage) {
       console.log(data.errorMessage)
     }
-    
+
     setLikes(data.likes)
   }
 
@@ -36,7 +36,7 @@ const Blog = ({ blog, handleDelete }) => {
           <li>Likes: {likes} <button onClick={handleAddLike}>Like</button></li>
           {blog?.user?.name && <li>User: {blog.user.name}</li>}
         </ul>
-        <button style={{background: 'tomato', color: 'white'}} onClick={handleDelete}>Remove</button>
+        <button style={{ background: 'tomato', color: 'white' }} onClick={handleDelete}>Remove</button>
       </Togglable>
     </div>
   )

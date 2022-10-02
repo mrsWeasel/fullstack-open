@@ -66,10 +66,11 @@ const deleteBlog = async (blog) => {
   try {
     const response = await axios
       .delete(url, config)
-      if (!response?.data) {
-        return { errorMessage: 'response data error' }
-      }
-      return response.data  
+    console.log(response)
+    if (!response) {
+      return { errorMessage: 'response data error' }
+    }
+    return response
   }
   catch(error) {
     const data = { errorMessage: error.code }
@@ -78,24 +79,24 @@ const deleteBlog = async (blog) => {
 }
 
 const likeBlog = async (blog) => {
-  const updatedBlog = {...blog, likes: blog.likes + 1}
+  const updatedBlog = { ...blog, likes: blog.likes + 1 }
 
   const url = baseUrl + '/' + blog.id
   try {
-    const response = await axios  
+    const response = await axios
       .patch(url, updatedBlog)
 
-      if (!response?.data) {
-        return { errorMessage: 'response data error' }
-      }
-      console.log(response.data)
-      return response.data
+    if (!response?.data) {
+      return { errorMessage: 'response data error' }
+    }
+    console.log(response.data)
+    return response.data
   }
   catch (error) {
     const data = { errorMessage: error?.code }
     return data
   }
- 
+
 }
 
 const blogService = {

@@ -46,16 +46,16 @@ const App = () => {
     const data = await blogService.createBlog(blog)
 
     if (data.errorMessage) {
-        console.log(data.errorMessage)
-        handleShowErrorMessage(`Error creating blog: ${data.errorMessage}`)
-        return
+      console.log(data.errorMessage)
+      handleShowErrorMessage(`Error creating blog: ${data.errorMessage}`)
+      return
     }
     createBlogFormRef.current.toggleVisibility()
     handleShowSuccessMessage(`Blog '${data.title}' created successfully!`)
     const updatedBlogs = [...blogs, data]
     setBlogs(updatedBlogs)
 
-}
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -66,7 +66,7 @@ const App = () => {
       handleShowErrorMessage(`Error logging in: ${data.errorMessage}`)
       return
     }
-    handleShowSuccessMessage(`Logged in successfully! Welcome ${data?.name}!`)
+    handleShowSuccessMessage(`Logged in successfully! Welcome ${data?.name ?? ''}!`)
 
     window.localStorage.setItem(
       'loggedInBlogUser', JSON.stringify(data)
@@ -77,7 +77,7 @@ const App = () => {
     setPassword('')
   }
 
-  const handleLogout = (event) => {
+  const handleLogout = () => {
     window.localStorage.removeItem('loggedInBlogUser')
     setUser(null)
   }
@@ -85,9 +85,9 @@ const App = () => {
   const handleInputChange = (event) => {
     const { id, value } = event?.target || {}
     switch (id) {
-      case 'username': return setUsername(value)
-      case 'password': return setPassword(value)
-      default: return null
+    case 'username': return setUsername(value)
+    case 'password': return setPassword(value)
+    default: return null
     }
   }
 
