@@ -7,7 +7,7 @@ const Blog = ({ blog, handleDelete }) => {
 
   useEffect(() => {
     setLikes(blog?.likes)
-  }, [])
+  }, [blog?.likes])
 
   const handleAddLike = async (event) => {
     console.log('liked', blog?.title, likes)
@@ -34,7 +34,6 @@ const Blog = ({ blog, handleDelete }) => {
         <ul>
           <li>Url: <a href={blog.url}>{blog.url}</a></li>
           <li>Likes: {likes} <button onClick={handleAddLike}>Like</button></li>
-          <li>Id: {blog?.id}</li>
           {blog?.user?.name && <li>User: {blog.user.name}</li>}
         </ul>
         <button style={{background: 'tomato', color: 'white'}} onClick={handleDelete}>Remove</button>

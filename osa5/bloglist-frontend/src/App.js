@@ -133,7 +133,7 @@ const App = () => {
       {user ?
         <>
           {renderBlogs()}
-          <Togglable buttonLabel='Create new blog' useCancel={1} ref={createBlogFormRef}>
+          <Togglable buttonLabel='Create new blog' useCancel={true} ref={createBlogFormRef}>
             <CreateBlogForm handleShowErrorMessage={handleShowErrorMessage} handleShowSuccessMessage={handleShowSuccessMessage} handleCreateBlog={handleCreateBlog} />
           </Togglable>
         </>
