@@ -19,7 +19,7 @@ const Blog = ({ blog, handleDelete }) => {
       console.log('data error')
       return
     }
-
+    
     if (data.errorMessage) {
       console.log(data.errorMessage)
     }
