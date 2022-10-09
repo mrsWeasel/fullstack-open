@@ -89,7 +89,6 @@ const likeBlog = async (blog) => {
     if (!response?.data) {
       return { errorMessage: 'response data error' }
     }
-    console.log(response.data)
     return response.data
   }
   catch (error) {

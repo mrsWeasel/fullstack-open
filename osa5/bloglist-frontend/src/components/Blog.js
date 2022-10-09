@@ -11,7 +11,6 @@ const Blog = ({ blog, handleDelete }) => {
 
   const handleAddLike = async () => {
     console.log('liked', blog?.title, likes)
-    setLikes(0)
     const updatedBlog = { ...blog, likes }
     const data = await blogService.likeBlog(updatedBlog)
 
@@ -19,7 +18,7 @@ const Blog = ({ blog, handleDelete }) => {
       console.log('data error')
       return
     }
-    
+
     if (data.errorMessage) {
       console.log(data.errorMessage)
     }
