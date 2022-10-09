@@ -39,9 +39,6 @@ describe('<Blog/>', () => {
   })
 
   test('when like button is clicked twice, event handler function is also called twice', async () => {
-    // const mockAddLike = container.instance().handleAddLike
-    // container.instance().handleAddLike = jest.fn()
-    // console.log(container.instance())
     const spyHandleAddLike = jest.spyOn(blogService, 'likeBlog')
 
     const user = userEvent.setup()
@@ -52,7 +49,6 @@ describe('<Blog/>', () => {
     await user.click(likeButton)
     await user.click(likeButton)
 
-    // console.log(container)
     expect(spyHandleAddLike).toBeCalledTimes(2)
   })
 
