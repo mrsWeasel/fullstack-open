@@ -46,5 +46,19 @@ describe('Blog app', function () {
       cy.contains('Create blog').click()
       cy.contains('Blog created by Cypress')
     })
+    it('A blog can be given a like', function () {
+        cy.request({
+          url: 'http://localhost:3003/api/blogs',
+          method: 'POST',
+          body: {title: 'Blog created by Cypress', author: 'Cypress', url: 'https://docs.cypress.io/guides/overview/why-cypress#In-a-nutshell'},
+          headers: {
+            'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedInBlogUser')).token}`
+          }
+        })  
+        cy.visit('http://localhost:3000')
+        cy.contains('Blog created by Cypress').contains('View').click()
+        cy.contains('Blog created by Cypress').parent().contains('Like').click()
+        cy.contains('Blog created by Cypress').parent().contains('Likes: 1')
+    })
   })
 })
