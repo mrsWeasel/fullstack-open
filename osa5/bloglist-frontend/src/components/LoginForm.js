@@ -18,7 +18,7 @@ const LoginForm = ({
         <input type='password' id='password' value={password || ''} onChange={handleInputChange} />
       </label>
 
-      <input type='submit' />
+      <input id='submitLogin' type='submit' />
     </form>
   )
 }
