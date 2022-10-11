@@ -97,5 +97,45 @@ describe('Blog app', function () {
     cy.contains('Blog created by Cypress').parent().contains('Remove').click()
     cy.contains('Blog created by Cypress')
   })
+  it('blogs are arranged by likes - descending', function() {
+    cy.request({
+      url: 'http://localhost:3003/api/blogs',
+      method: 'POST',
+      body: {title: 'With 8 likes', author: 'Cypress', url: 'https://docs.cypress.io/guides/overview/why-cypress#In-a-nutshell', likes: 8},
+      headers: {
+        'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedInBlogUser')).token}`
+      }
+    })
+    cy.request({
+      url: 'http://localhost:3003/api/blogs',
+      method: 'POST',
+      body: {title: 'With 3 likes', author: 'Cypress', url: 'https://docs.cypress.io/guides/overview/why-cypress#In-a-nutshell', likes: 3},
+      headers: {
+        'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedInBlogUser')).token}`
+      }
+    })
+    cy.request({
+      url: 'http://localhost:3003/api/blogs',
+      method: 'POST',
+      body: {title: 'With 2 likes', author: 'Cypress', url: 'https://docs.cypress.io/guides/overview/why-cypress#In-a-nutshell', likes: 2},
+      headers: {
+        'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedInBlogUser')).token}`
+      }
+    })
+    cy.request({
+      url: 'http://localhost:3003/api/blogs',
+      method: 'POST',
+      body: {title: 'With 25 likes', author: 'Cypress', url: 'https://docs.cypress.io/guides/overview/why-cypress#In-a-nutshell', likes: 25},
+      headers: {
+        'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedInBlogUser')).token}`
+      }
+    })
+    cy.visit('http://localhost:3000')
+    cy.get('.blog').eq(0).should('contain', 'With 25 likes')
+    cy.get('.blog').eq(1).should('contain', 'With 8 likes')
+    cy.get('.blog').eq(2).should('contain', 'With 3 likes')
+    cy.get('.blog').eq(3).should('contain', 'With 2 likes')
   })
+  })
+
 })

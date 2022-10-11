@@ -27,7 +27,7 @@ const Blog = ({ blog, handleDelete }) => {
   }
 
   return (
-    <div style={{ border: '1px solid rgba(0,0,0,0.2)', padding: 16, marginBottom: 8 }}>
+    <div className='blog' style={{ border: '1px solid rgba(0,0,0,0.2)', padding: 16, marginBottom: 8 }}>
       {blog.title} | {blog.author}
       <Togglable buttonLabel='View'>
         <ul>
