@@ -41,6 +41,12 @@ export const vote = (id) => {
   }
 }
 
+export const sort = () => {
+  return {
+    type: 'SORT_ANECDOTES'
+  }
+}
+
 
 const reducer = (state = initialState, action) => {
 
@@ -66,6 +72,12 @@ const reducer = (state = initialState, action) => {
       }
 
       return [...state, newAnecdote]
+    }
+
+    case 'SORT_ANECDOTES': {
+      const anecdotes = [...state]
+      const sortedAnecdotes = anecdotes.sort((a, b) => b.votes - a.votes)
+      return sortedAnecdotes
     }
 
     default: return state
