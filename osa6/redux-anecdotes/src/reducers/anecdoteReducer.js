@@ -26,7 +26,7 @@ const generateId = () => {
 }
 
 const anecdoteSlice = createSlice({
-  name: 'notes',
+  name: 'anecdotes',
   initialState,
   reducers: {
     addAnecdote(state, action) {
