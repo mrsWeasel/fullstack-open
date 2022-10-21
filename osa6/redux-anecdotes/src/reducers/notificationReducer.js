@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     text: 'Notification dummy message',
+    visible: false,
 }
 
 const notificationSlice = createSlice({
@@ -10,9 +11,23 @@ const notificationSlice = createSlice({
     reducers: {
         notificationDummyReducer(state, action) {
             return state
-        }
+        },
+        changeText(state, action) {
+            const text = action.payload
+            return {
+                ...state,
+                text
+            }
+        },
+        toggleVisibility(state, action) {
+            const visible = action.payload
+            return {
+                ...state,
+                visible
+            }
+        } 
     }
 })
 
-export const { notificationDummyReducer } = notificationSlice.actions
+export const { changeText, toggleVisibility } = notificationSlice.actions
 export default notificationSlice.reducer

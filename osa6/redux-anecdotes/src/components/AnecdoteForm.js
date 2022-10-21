@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { addAnecdote } from '../reducers/anecdoteReducer'
+import { changeText, toggleVisibility } from '../reducers/notificationReducer'
 
 const AnecdoteForm = () => {
     const dispatch = useDispatch()
@@ -9,6 +10,9 @@ const AnecdoteForm = () => {
         const content = event.target.anecdote.value
         dispatch(addAnecdote(content))
         event.target.anecdote.value = ''
+        dispatch(changeText(`You added "${content}"`))
+        dispatch(toggleVisibility(true))
+        setTimeout(() => dispatch(toggleVisibility(false)), 5000)
       }
 
     return (
