@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { vote, sort, initializeAnecdotes } from '../reducers/anecdoteReducer'
+import { initializeAnecdotes, voteAnecdote } from '../reducers/anecdoteReducer'
 import { changeText, toggleVisibility } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
@@ -18,8 +18,7 @@ const AnecdoteList = () => {
 
     const handleVote = (anecdote) => () => {
         const {id, content} = anecdote || {}
-        dispatch(vote(id))
-        dispatch(sort())
+        dispatch(voteAnecdote(id))
         dispatch(changeText(`You voted for "${content}"`))
         dispatch(toggleVisibility(true))
         setTimeout(() => dispatch(toggleVisibility(false)), 5000)

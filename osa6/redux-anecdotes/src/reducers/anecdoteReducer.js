@@ -42,6 +42,7 @@ export const initializeAnecdotes = () => {
   return async dispatch => {
     const anecdotes = await anecdoteService.getAll()
     dispatch(setAnecdotes(anecdotes))
+    dispatch(sort())
   }
 }
 
@@ -49,6 +50,14 @@ export const createAnecdote = (content) => {
   return async dispatch => {
     const newAnecdote = await anecdoteService.createAnecdote(content)
     dispatch(addAnecdote(newAnecdote))
+  }
+}
+
+export const voteAnecdote = (id) => {
+  return async dispatch => {
+    await anecdoteService.voteAnecdote(id)
+    dispatch(vote(id))
+    dispatch(sort())
   }
 }
 
