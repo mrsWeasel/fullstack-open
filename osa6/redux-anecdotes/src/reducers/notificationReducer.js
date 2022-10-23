@@ -9,10 +9,7 @@ const notificationSlice = createSlice({
     name: 'notification',
     initialState,
     reducers: {
-        notificationDummyReducer(state, action) {
-            return state
-        },
-        changeText(state, action) {
+        setNotification(state, action) {
             const text = action.payload
             return {
                 ...state,
@@ -29,5 +26,19 @@ const notificationSlice = createSlice({
     }
 })
 
-export const { changeText, toggleVisibility } = notificationSlice.actions
+export const { setNotification, toggleVisibility } = notificationSlice.actions
+
+export const notify = (message, timeout) => {
+    const delay = () => {
+        return new Promise(resolve => setTimeout(resolve, timeout * 1000))
+    }
+
+    return async dispatch => {
+        dispatch(setNotification(message))
+        dispatch(toggleVisibility(true))
+        await delay()
+        dispatch(toggleVisibility(false))
+    }
+}
+
 export default notificationSlice.reducer
