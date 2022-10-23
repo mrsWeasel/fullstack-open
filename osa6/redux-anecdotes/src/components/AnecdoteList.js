@@ -6,22 +6,21 @@ import anecdoteService from '../services/anecdotes'
 
 const AnecdoteList = () => {
     const dispatch = useDispatch()
-    
+
     useEffect(() => {
         anecdoteService
         .getAll()
         .then(anecdotes => dispatch(setAnecdotes(anecdotes)))
     }, [dispatch])
-
+    
     const anecdotes = useSelector((state) => {
         if (!state.filter) return state.anecdotes
-        
         const filteredAnecdotes = state.anecdotes.filter((a) => a.content.toLowerCase().includes(state.filter.toLowerCase()))
         return filteredAnecdotes
     })
 
     const handleVote = (anecdote) => () => {
-        const {id, content} = anecdote || {}
+        const {id, content} = anecdote || {}
         dispatch(vote(id))
         dispatch(sort())
         dispatch(changeText(`You voted for "${content}"`))
