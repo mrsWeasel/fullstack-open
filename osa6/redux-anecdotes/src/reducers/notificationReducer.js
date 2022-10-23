@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     text: 'Notification dummy message',
     visible: false,
+    timeoutId: undefined,
 }
 
 const notificationSlice = createSlice({
@@ -22,22 +23,30 @@ const notificationSlice = createSlice({
                 ...state,
                 visible
             }
-        } 
+        },
+        setTimeoutId(state, action) {
+            if (state.timeoutId) clearTimeout(state.timeoutId)
+
+            const timeoutId = action.payload
+            return {
+                ...state,
+                timeoutId
+            }
+        }
     }
 })
 
-export const { setNotification, toggleVisibility } = notificationSlice.actions
+export const { setNotification, toggleVisibility, setTimeoutId } = notificationSlice.actions
 
 export const notify = (message, timeout) => {
-    const delay = () => {
-        return new Promise(resolve => setTimeout(resolve, timeout * 1000))
-    }
 
     return async dispatch => {
         dispatch(setNotification(message))
         dispatch(toggleVisibility(true))
-        await delay()
-        dispatch(toggleVisibility(false))
+        const hideAfterDelay = setTimeout(() => {
+            dispatch(toggleVisibility(false))
+        }, timeout * 1000)
+        dispatch(setTimeoutId(hideAfterDelay))
     }
 }
 

@@ -5,7 +5,6 @@ const Filter = ({changeFilter}) => {
 
     const handleChange = (event) => {
       const input = event?.target?.value
-      console.log(input)
       changeFilter(input)
     }
     const style = {
