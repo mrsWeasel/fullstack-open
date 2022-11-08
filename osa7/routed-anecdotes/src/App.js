@@ -5,6 +5,7 @@ import About from './About'
 import Anecdote from './Anecdote'
 import Menu from './Menu'
 import Footer from './Footer'
+import Notification from './Notification'
 import { Routes, Route, useMatch } from 'react-router-dom'
 
 const App = () => {
@@ -30,6 +31,8 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`"${anecdote.content}" was added`)
+    setTimeout(() => {setNotification('')}, 5000)
   }
 
   const anecdoteById = (id) =>
@@ -52,6 +55,7 @@ const App = () => {
   return (
     <div>
       <h1>Software anecdotes</h1>
+      {notification && <Notification text={notification}/>}
       <Menu />
         <Routes>
           <Route path='/anecdotes/:id' element={<Anecdote anecdote={anecdote} />} />
