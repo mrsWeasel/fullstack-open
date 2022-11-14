@@ -8,20 +8,45 @@ const useField = (type) => {
     setValue(event.target.value)
   }
 
-  return {
+  const reset = () => {
+    setValue('')
+  }  
+
+  const props = {
     type,
     value,
     onChange
   }
+
+  return {
+      props, 
+      reset
+    }
 }
 
 const useResource = (baseUrl) => {
   const [resources, setResources] = useState([])
 
-  // ...
+  useEffect(() => {
+    axios.get(baseUrl)
+    .then((data) => {
+      if (!data?.data) throw new Error('Data error')
+      setResources(data.data)
+    })
+    .catch(error => {
+      console.log(error.message)
+    })
+  }, [baseUrl])
 
   const create = (resource) => {
-    // ...
+    axios.post(baseUrl, resource)
+    .then((data) => {
+      setResources(resources.concat(resource))
+      return data
+    })
+    .catch(error => {
+      console.log(error.message)
+    })
   }
 
   const service = {
@@ -43,30 +68,33 @@ const App = () => {
 
   const handleNoteSubmit = (event) => {
     event.preventDefault()
-    noteService.create({ content: content.value })
+    noteService.create({ content: content.props.value })
+    content.reset()
   }
  
   const handlePersonSubmit = (event) => {
     event.preventDefault()
-    personService.create({ name: name.value, number: number.value})
+    personService.create({ name: name.props.value, number: number.props.value})
+    name.reset()
+    number.reset()
   }
 
   return (
     <div>
       <h2>notes</h2>
       <form onSubmit={handleNoteSubmit}>
-        <input {...content} />
+        <input {...content.props} />
         <button>create</button>
       </form>
-      {notes.map(n => <p key={n.id}>{n.content}</p>)}
+      {notes.map(n => <p key={`${n.id}${n.content}`}>{n.content}</p>)}
 
       <h2>persons</h2>
       <form onSubmit={handlePersonSubmit}>
-        name <input {...name} /> <br/>
-        number <input {...number} />
+        name <input {...name.props} /> <br/>
+        number <input {...number.props} />
         <button>create</button>
       </form>
-      {persons.map(n => <p key={n.id}>{n.name} {n.number}</p>)}
+      {persons.map(n => <p key={`${n.id}${n.name}`}>{n.name} {n.number}</p>)}
     </div>
   )
 }
