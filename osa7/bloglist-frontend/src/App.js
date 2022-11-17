@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import LoginForm from './components/LoginForm'
 import loginService from './services/login'
-import { Route, Routes } from 'react-router-dom'
+import { Link, Route, Routes } from 'react-router-dom'
 import Blogs from './components/Blogs'
+import Users from './components/Users'
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -93,6 +94,10 @@ const App = () => {
           <h2>Blogs</h2>
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>Logout</button>
+          <div>
+            <Link to="/">Blogs</Link>
+            <Link to="/users">Users</Link>
+          </div>
           <Routes>
             <Route
               path="/"
@@ -103,6 +108,7 @@ const App = () => {
                 />
               }
             />
+            <Route path="/users" element={<Users />} />
           </Routes>
         </>
       ) : (
