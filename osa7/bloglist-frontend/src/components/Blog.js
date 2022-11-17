@@ -27,15 +27,29 @@ const Blog = ({ blog, handleDelete }) => {
   }
 
   return (
-    <div className='blog' style={{ border: '1px solid rgba(0,0,0,0.2)', padding: 16, marginBottom: 8 }}>
+    <div
+      className="blog"
+      style={{
+        border: '1px solid rgba(0,0,0,0.2)',
+        padding: 16,
+        marginBottom: 8,
+      }}>
       {blog.title} | {blog.author}
-      <Togglable buttonLabel='View'>
+      <Togglable buttonLabel="View">
         <ul>
-          <li>Url: <a href={blog.url}>{blog.url}</a></li>
-          <li>Likes: {likes} <button onClick={handleAddLike}>Like</button></li>
+          <li>
+            Url: <a href={blog.url}>{blog.url}</a>
+          </li>
+          <li>
+            Likes: {likes} <button onClick={handleAddLike}>Like</button>
+          </li>
           {blog?.user?.name && <li>User: {blog.user.name}</li>}
         </ul>
-        <button style={{ background: 'tomato', color: 'white' }} onClick={handleDelete}>Remove</button>
+        <button
+          style={{ background: 'tomato', color: 'white' }}
+          onClick={handleDelete}>
+          Remove
+        </button>
       </Togglable>
     </div>
   )

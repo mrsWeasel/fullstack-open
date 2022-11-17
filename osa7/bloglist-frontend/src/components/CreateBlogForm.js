@@ -11,7 +11,7 @@ const CreateBlogForm = ({ handleCreateBlog }) => {
     handleCreateBlog({
       title,
       author,
-      url
+      url,
     })
 
     setTitle('')
@@ -22,10 +22,14 @@ const CreateBlogForm = ({ handleCreateBlog }) => {
   const handleInputChange = (event) => {
     const { id, value } = event?.target || {}
     switch (id) {
-    case 'title': return setTitle(value)
-    case 'author': return setAuthor(value)
-    case 'url': return setUrl(value)
-    default: return null
+      case 'title':
+        return setTitle(value)
+      case 'author':
+        return setAuthor(value)
+      case 'url':
+        return setUrl(value)
+      default:
+        return null
     }
   }
 
@@ -34,21 +38,36 @@ const CreateBlogForm = ({ handleCreateBlog }) => {
       <h3>Create new blog</h3>
       <form onSubmit={addBlog}>
         <label>
-                    Title:
-          <input type='text' id='title' value={title || ''} onChange={handleInputChange} />
+          Title:
+          <input
+            type="text"
+            id="title"
+            value={title || ''}
+            onChange={handleInputChange}
+          />
         </label>
         <br />
         <label>
-                    Author:
-          <input type='text' id='author' value={author || ''} onChange={handleInputChange} />
+          Author:
+          <input
+            type="text"
+            id="author"
+            value={author || ''}
+            onChange={handleInputChange}
+          />
         </label>
         <br />
         <label>
-                    Url:
-          <input type='text' id='url' value={url || ''} onChange={handleInputChange} />
+          Url:
+          <input
+            type="text"
+            id="url"
+            value={url || ''}
+            onChange={handleInputChange}
+          />
         </label>
         <br />
-        <input type='submit' value='Create blog'/>
+        <input type="submit" value="Create blog" />
       </form>
     </>
   )

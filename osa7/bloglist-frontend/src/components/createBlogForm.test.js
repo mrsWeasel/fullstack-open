@@ -5,12 +5,10 @@ import userEvent from '@testing-library/user-event'
 import CreateBlogForm from './CreateBlogForm'
 
 describe('<CreateBlogForm/>', () => {
-
-
   test('form is sent with correct data', async () => {
     const user = userEvent.setup()
     const handleCreateBlog = jest.fn()
-  
+
     render(<CreateBlogForm handleCreateBlog={handleCreateBlog} />)
 
     const inputs = screen.getAllByRole('textbox')
@@ -22,7 +20,10 @@ describe('<CreateBlogForm/>', () => {
     await user.click(submit)
 
     expect(handleCreateBlog.mock.calls).toHaveLength(1)
-    expect(handleCreateBlog.mock.calls[0][0]).toEqual({ title: 'Title here', author: 'Author here', url: 'Url here' })
+    expect(handleCreateBlog.mock.calls[0][0]).toEqual({
+      title: 'Title here',
+      author: 'Author here',
+      url: 'Url here',
+    })
   })
-
 })

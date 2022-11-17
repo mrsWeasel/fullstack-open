@@ -2,7 +2,6 @@ import axios from 'axios'
 const baseUrl = '/api/blogs'
 
 const setToken = (newToken) => {
-
   const token = `Bearer ${newToken}`
   return token
 }
@@ -16,8 +15,7 @@ const getAllBlogs = async () => {
     }
 
     return response.data
-  }
-  catch (error) {
+  } catch (error) {
     const data = { errorMessage: error?.code }
     return data
   }
@@ -30,21 +28,18 @@ const createBlog = async (blog) => {
 
   const config = {
     headers: {
-      authorization: token
-    }
+      authorization: token,
+    },
   }
 
   try {
-    const response = await axios
-      .post(baseUrl, blog, config)
+    const response = await axios.post(baseUrl, blog, config)
 
     if (!response?.data) {
       return { errorMessage: 'response data error' }
     }
     return response.data
-
-  }
-  catch (error) {
+  } catch (error) {
     const data = { errorMessage: error.code }
     return data
   }
@@ -59,20 +54,18 @@ const deleteBlog = async (blog) => {
   console.log(token)
   const config = {
     headers: {
-      authorization: token
-    }
+      authorization: token,
+    },
   }
 
   try {
-    const response = await axios
-      .delete(url, config)
+    const response = await axios.delete(url, config)
     console.log(response)
     if (!response) {
       return { errorMessage: 'response data error' }
     }
     return response
-  }
-  catch(error) {
+  } catch (error) {
     const data = { errorMessage: error.code }
     return data
   }
@@ -83,19 +76,16 @@ const likeBlog = async (blog) => {
 
   const url = baseUrl + '/' + blog.id
   try {
-    const response = await axios
-      .patch(url, updatedBlog)
+    const response = await axios.patch(url, updatedBlog)
 
     if (!response?.data) {
       return { errorMessage: 'response data error' }
     }
     return response.data
-  }
-  catch (error) {
+  } catch (error) {
     const data = { errorMessage: error?.code }
     return data
   }
-
 }
 
 const blogService = {
@@ -103,7 +93,7 @@ const blogService = {
   getAllBlogs,
   createBlog,
   likeBlog,
-  deleteBlog
+  deleteBlog,
 }
 
 export default blogService

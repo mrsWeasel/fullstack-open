@@ -17,20 +17,25 @@ const App = () => {
 
   const handleShowErrorMessage = (message) => {
     setErrorMessage(message)
-    setTimeout(() => { setErrorMessage('') }, 4000)
+    setTimeout(() => {
+      setErrorMessage('')
+    }, 4000)
   }
 
   const handleShowSuccessMessage = (message) => {
     setSuccessMessage(message)
-    setTimeout(() => { setSuccessMessage('') }, 4000)
+    setTimeout(() => {
+      setSuccessMessage('')
+    }, 4000)
   }
 
   useEffect(() => {
-    blogService.getAllBlogs().then(blogs => {
-      blogs.sort((a,b) => {return b.likes - a.likes})
+    blogService.getAllBlogs().then((blogs) => {
+      blogs.sort((a, b) => {
+        return b.likes - a.likes
+      })
       setBlogs(blogs)
-    }
-    )
+    })
   }, [])
 
   useEffect(() => {
@@ -42,7 +47,6 @@ const App = () => {
   }, [])
 
   const handleCreateBlog = async (blog) => {
-
     const data = await blogService.createBlog(blog)
 
     if (data.errorMessage) {
@@ -54,7 +58,6 @@ const App = () => {
     handleShowSuccessMessage(`Blog '${data.title}' created successfully!`)
     const updatedBlogs = [...blogs, data]
     setBlogs(updatedBlogs)
-
   }
 
   const handleLogin = async (event) => {
@@ -66,11 +69,11 @@ const App = () => {
       handleShowErrorMessage(`Error logging in: ${data.errorMessage}`)
       return
     }
-    handleShowSuccessMessage(`Logged in successfully! Welcome ${data?.name ?? ''}!`)
-
-    window.localStorage.setItem(
-      'loggedInBlogUser', JSON.stringify(data)
+    handleShowSuccessMessage(
+      `Logged in successfully! Welcome ${data?.name ?? ''}!`
     )
+
+    window.localStorage.setItem('loggedInBlogUser', JSON.stringify(data))
 
     setUser(data)
     setUsername('')
@@ -85,9 +88,12 @@ const App = () => {
   const handleInputChange = (event) => {
     const { id, value } = event?.target || {}
     switch (id) {
-    case 'username': return setUsername(value)
-    case 'password': return setPassword(value)
-    default: return null
+      case 'username':
+        return setUsername(value)
+      case 'password':
+        return setPassword(value)
+      default:
+        return null
     }
   }
 
@@ -97,20 +103,28 @@ const App = () => {
 
     if (data.errorMessage) {
       console.log(data.errorMessage)
-      handleShowErrorMessage(`Error removing ${blog.title}: ${data.errorMessage}`)
+      handleShowErrorMessage(
+        `Error removing ${blog.title}: ${data.errorMessage}`
+      )
       return
     }
 
-    const updatedBlogs = blogs.filter(b => b.id !== blog.id)
+    const updatedBlogs = blogs.filter((b) => b.id !== blog.id)
     setBlogs(updatedBlogs)
   }
 
   const renderError = () => {
-    return <div style={{ border: '2px solid red', padding: 16 }}>{errorMessage}</div>
+    return (
+      <div style={{ border: '2px solid red', padding: 16 }}>{errorMessage}</div>
+    )
   }
 
   const renderSuccess = () => {
-    return <div style={{ border: '2px solid green', padding: 16 }}>{successMessage}</div>
+    return (
+      <div style={{ border: '2px solid green', padding: 16 }}>
+        {successMessage}
+      </div>
+    )
   }
 
   const renderBlogs = () => {
@@ -119,9 +133,9 @@ const App = () => {
         <h2>Blogs</h2>
         <p>{user.name} logged in</p>
         <button onClick={handleLogout}>Logout</button>
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} handleDelete={handleDelete(blog)}/>
-        )}
+        {blogs.map((blog) => (
+          <Blog key={blog.id} blog={blog} handleDelete={handleDelete(blog)} />
+        ))}
       </div>
     )
   }
@@ -130,21 +144,30 @@ const App = () => {
     <div>
       {errorMessage && renderError()}
       {successMessage && renderSuccess()}
-      {user ?
+      {user ? (
         <>
           {renderBlogs()}
-          <Togglable buttonLabel='Create new blog' useCancel={true} ref={createBlogFormRef}>
-            <CreateBlogForm handleShowErrorMessage={handleShowErrorMessage} handleShowSuccessMessage={handleShowSuccessMessage} handleCreateBlog={handleCreateBlog} />
+          <Togglable
+            buttonLabel="Create new blog"
+            useCancel={true}
+            ref={createBlogFormRef}>
+            <CreateBlogForm
+              handleShowErrorMessage={handleShowErrorMessage}
+              handleShowSuccessMessage={handleShowSuccessMessage}
+              handleCreateBlog={handleCreateBlog}
+            />
           </Togglable>
         </>
-        :
-
-        <LoginForm username={username} password={password} handleLogin={handleLogin} handleInputChange={handleInputChange} />
-      }
+      ) : (
+        <LoginForm
+          username={username}
+          password={password}
+          handleLogin={handleLogin}
+          handleInputChange={handleInputChange}
+        />
+      )}
     </div>
   )
-
-
 }
 
 export default App
