@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import blogService from '../services/blogs'
 import Togglable from './Togglable'
+import { Box, BlogHeading, BlogDetailsList, BlogDetail } from './blogStyles'
+import { Button } from './buttonStyles'
 
 const Blog = ({ blog, handleDelete }) => {
   const [likes, setLikes] = useState(0)
@@ -27,31 +29,27 @@ const Blog = ({ blog, handleDelete }) => {
   }
 
   return (
-    <div
-      className="blog"
-      style={{
-        border: '1px solid rgba(0,0,0,0.2)',
-        padding: 16,
-        marginBottom: 8,
-      }}>
-      {blog.title} | {blog.author}
+    <Box>
+      <BlogHeading>
+        {blog.title} | {blog.author}
+      </BlogHeading>
       <Togglable buttonLabel="View">
-        <ul>
-          <li>
+        <BlogDetailsList>
+          <BlogDetail>
             Url: <a href={blog.url}>{blog.url}</a>
-          </li>
-          <li>
-            Likes: {likes} <button onClick={handleAddLike}>Like</button>
-          </li>
-          {blog?.user?.name && <li>User: {blog.user.name}</li>}
-        </ul>
-        <button
-          style={{ background: 'tomato', color: 'white' }}
-          onClick={handleDelete}>
+          </BlogDetail>
+          <BlogDetail>
+            Likes: {likes} <Button onClick={handleAddLike}>Like</Button>
+          </BlogDetail>
+          {blog?.user?.name && <BlogDetail>User: {blog.user.name}</BlogDetail>}
+        </BlogDetailsList>
+        <Button
+          onClick={handleDelete}
+          style={{ borderColor: '#BC2B2B', color: '#BC2B2B' }}>
           Remove
-        </button>
+        </Button>
       </Togglable>
-    </div>
+    </Box>
   )
 }
 

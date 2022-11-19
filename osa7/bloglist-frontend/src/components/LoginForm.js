@@ -1,30 +1,36 @@
 import PropTypes from 'prop-types'
+import { Button } from './buttonStyles'
+import { FormWrapper, FormInput } from './formStyles'
 
 const LoginForm = ({ handleLogin, handleInputChange, username, password }) => {
   return (
-    <form onSubmit={handleLogin}>
-      <label>
-        Username:
-        <input
-          type="text"
-          id="username"
-          value={username || ''}
-          onChange={handleInputChange}
-        />
-      </label>
-
-      <label>
-        Password:
-        <input
-          type="password"
-          id="password"
-          value={password || ''}
-          onChange={handleInputChange}
-        />
-      </label>
-
-      <input id="submitLogin" type="submit" />
-    </form>
+    <FormWrapper>
+      <form onSubmit={handleLogin}>
+        <label>
+          Username:
+          <FormInput
+            type="text"
+            id="username"
+            value={username || ''}
+            onChange={handleInputChange}
+          />
+        </label>
+        <br />
+        <label>
+          Password:
+          <FormInput
+            type="password"
+            id="password"
+            value={password || ''}
+            onChange={handleInputChange}
+          />
+        </label>
+        <br />
+        <Button id="submitLogin" type="submit">
+          Kirjaudu sisään
+        </Button>
+      </form>
+    </FormWrapper>
   )
 }
 

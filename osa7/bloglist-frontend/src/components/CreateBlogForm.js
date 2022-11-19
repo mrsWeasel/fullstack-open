@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { FormWrapper, FormInput } from './formStyles'
+import { Button } from './buttonStyles'
 
 const CreateBlogForm = ({ handleCreateBlog }) => {
   const [title, setTitle] = useState('')
@@ -34,12 +36,12 @@ const CreateBlogForm = ({ handleCreateBlog }) => {
   }
 
   return (
-    <>
+    <FormWrapper>
       <h3>Create new blog</h3>
       <form onSubmit={addBlog}>
         <label>
           Title:
-          <input
+          <FormInput
             type="text"
             id="title"
             value={title || ''}
@@ -49,7 +51,7 @@ const CreateBlogForm = ({ handleCreateBlog }) => {
         <br />
         <label>
           Author:
-          <input
+          <FormInput
             type="text"
             id="author"
             value={author || ''}
@@ -59,7 +61,7 @@ const CreateBlogForm = ({ handleCreateBlog }) => {
         <br />
         <label>
           Url:
-          <input
+          <FormInput
             type="text"
             id="url"
             value={url || ''}
@@ -67,9 +69,9 @@ const CreateBlogForm = ({ handleCreateBlog }) => {
           />
         </label>
         <br />
-        <input type="submit" value="Create blog" />
+        <Button type="submit">Create blog</Button>
       </form>
-    </>
+    </FormWrapper>
   )
 }
 

@@ -3,6 +3,7 @@ import Blog from './Blog'
 import CreateBlogForm from './CreateBlogForm'
 import Togglable from './Togglable'
 import blogService from '../services/blogs'
+import { BlogList } from './blogStyles'
 
 const Blogs = ({ handleShowErrorMessage, handleShowSuccessMessage }) => {
   const createBlogFormRef = useRef()
@@ -49,9 +50,7 @@ const Blogs = ({ handleShowErrorMessage, handleShowSuccessMessage }) => {
 
   return (
     <div>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} handleDelete={handleDelete(blog)} />
-      ))}
+      <h1>Blogs</h1>
       <Togglable
         buttonLabel="Create new blog"
         useCancel={true}
@@ -62,6 +61,11 @@ const Blogs = ({ handleShowErrorMessage, handleShowSuccessMessage }) => {
           handleCreateBlog={handleCreateBlog}
         />
       </Togglable>
+      <BlogList>
+        {blogs.map((blog) => (
+          <Blog key={blog.id} blog={blog} handleDelete={handleDelete(blog)} />
+        ))}
+      </BlogList>
     </div>
   )
 }

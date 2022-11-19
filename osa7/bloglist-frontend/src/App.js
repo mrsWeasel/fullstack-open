@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import LoginForm from './components/LoginForm'
 import loginService from './services/login'
-import { Link, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import Blogs from './components/Blogs'
 import Users from './components/Users'
+import { Wrapper, Container, Navigation, NavLinks, NavItem } from './appStyles'
+import { Button } from './components/buttonStyles'
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -86,40 +88,45 @@ const App = () => {
   }
 
   return (
-    <div>
-      {errorMessage && renderError()}
-      {successMessage && renderSuccess()}
-      {user ? (
-        <>
-          <h2>Blogs</h2>
-          <p>{user.name} logged in</p>
-          <button onClick={handleLogout}>Logout</button>
-          <div>
-            <Link to="/">Blogs</Link>
-            <Link to="/users">Users</Link>
-          </div>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Blogs
-                  handleShowErrorMessage={handleShowErrorMessage}
-                  handleShowSuccessMessage={handleShowSuccessMessage}
-                />
-              }
-            />
-            <Route path="/users" element={<Users />} />
-          </Routes>
-        </>
-      ) : (
-        <LoginForm
-          username={username}
-          password={password}
-          handleLogin={handleLogin}
-          handleInputChange={handleInputChange}
-        />
+    <Wrapper>
+      {user && (
+        <Navigation>
+          <NavLinks>
+            <NavItem to="/">Blogs</NavItem>
+            <NavItem to="/users">Users</NavItem>
+          </NavLinks>
+          <div>{user && `Logged in as ${user.name}`}</div>
+          <div>{user && <Button onClick={handleLogout}>Logout</Button>}</div>
+        </Navigation>
       )}
-    </div>
+      <Container>
+        {errorMessage && renderError()}
+        {successMessage && renderSuccess()}
+        {user ? (
+          <>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Blogs
+                    handleShowErrorMessage={handleShowErrorMessage}
+                    handleShowSuccessMessage={handleShowSuccessMessage}
+                  />
+                }
+              />
+              <Route path="/users" element={<Users />} />
+            </Routes>
+          </>
+        ) : (
+          <LoginForm
+            username={username}
+            password={password}
+            handleLogin={handleLogin}
+            handleInputChange={handleInputChange}
+          />
+        )}
+      </Container>
+    </Wrapper>
   )
 }
 
