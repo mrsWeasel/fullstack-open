@@ -1,15 +1,14 @@
 export const getParsedNumber = (arg: string | number): number => {
+  if (!arg) throw new Error('Argument is missing');
+
   const parsedNumber = Number(arg);
-  if (isNaN(parsedNumber)) {
-    throw new Error('Argument is NaN');
+  if (Number.isNaN(parsedNumber)) {
+    throw new Error(`Argument "${arg}" is not a number`);
   }
   return parsedNumber;
 };
 
-export const validateArgumentsLength = (
-  args: string[],
-  length: number,
-): boolean => {
+export const validateArgumentsLength = (args: string[], length: number): boolean => {
   if (!args) return false;
   if (args.length !== length) return false;
 

@@ -1,3 +1,5 @@
+import { getParsedNumber } from './utils/validateUtils';
+
 type Rating = 1 | 2 | 3;
 type RatingDescription = 'bad' | 'not too bad but could be better' | 'good';
 
@@ -11,35 +13,57 @@ interface exerciseHours {
   ratingDescription: RatingDescription;
 }
 
-const calculateExercises = (hours: number[], target: number): exerciseHours => {
-  if (!hours || hours.length < 1 || !target) throw new Error('invalid input');
+const calculateExercises = (target: number, hours: number[]): exerciseHours => {
+  try {
+    if (!target) throw new Error('No target exercise hours given as input');
 
-  const trainingDays = hours.filter((hrs) => hrs > 0).length;
-  const average = hours.reduce((a, b) => a + b, 0) / hours.length;
+    if (hours.length < 1) throw new Error('No hours given as input');
 
-  let rating: Rating | undefined;
-  let ratingDescription: RatingDescription | undefined;
+    const trainingDays = hours.filter((hrs) => hrs > 0).length;
+    const average = hours.reduce((a, b) => a + b, 0) / hours.length;
 
-  if (average < 0.5 * target) {
-    rating = 1;
-    ratingDescription = 'bad';
-  } else if (average >= 1 * target) {
-    rating = 3;
-    ratingDescription = 'good';
-  } else {
-    rating = 2;
-    ratingDescription = 'not too bad but could be better';
+    let rating: Rating | undefined;
+    let ratingDescription: RatingDescription | undefined;
+
+    if (average < 0.5 * target) {
+      rating = 1;
+      ratingDescription = 'bad';
+    } else if (average >= 1 * target) {
+      rating = 3;
+      ratingDescription = 'good';
+    } else {
+      rating = 2;
+      ratingDescription = 'not too bad but could be better';
+    }
+
+    return {
+      periodLength: hours.length,
+      trainingDays,
+      success: average >= target,
+      rating,
+      ratingDescription,
+      target,
+      average,
+    };
+  } catch (error) {
+    console.log(error.message);
   }
-
-  return {
-    periodLength: hours.length,
-    trainingDays,
-    success: average >= target,
-    rating,
-    ratingDescription,
-    target,
-    average,
-  };
 };
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+const calculateWithArguments = () => {
+  try {
+    const target: number = getParsedNumber(process.argv[2]);
+
+    const hours: number[] =
+      process.argv.splice(3).map((h) => {
+        const hourInput = getParsedNumber(h);
+        return hourInput;
+      }) ?? [];
+
+    console.log(calculateExercises(target, hours));
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+calculateWithArguments();
