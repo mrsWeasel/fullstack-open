@@ -8,7 +8,9 @@
     "calculateBmi": "ts-node bmiCalculator.ts",
     "calculateExercises": "ts-node exerciseCalculator.ts",
     "start": "ts-node hello.ts",
-    "dev": "ts-node-dev hello.ts"
+    "dev": "ts-node-dev hello.ts",
+    "startWebBMI": "ts-node webBMI.ts",
+    "devWebBMI": "ts-node-dev webBMI.ts"
   },
   "author": "Laura Heino",
   "license": "ISC",

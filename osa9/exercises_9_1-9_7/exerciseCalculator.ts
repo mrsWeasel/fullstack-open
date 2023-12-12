@@ -13,7 +13,7 @@ interface exerciseHours {
   ratingDescription: RatingDescription;
 }
 
-const calculateExercises = (target: number, hours: number[]): exerciseHours => {
+const calculateExercises = (target: number, hours: number[]): exerciseHours | undefined => {
   try {
     if (!target) throw new Error('No target exercise hours given as input');
 
@@ -47,6 +47,7 @@ const calculateExercises = (target: number, hours: number[]): exerciseHours => {
     };
   } catch (error) {
     console.log(error.message);
+    return undefined;
   }
 };
 
@@ -67,3 +68,5 @@ const calculateWithArguments = () => {
 };
 
 calculateWithArguments();
+
+export default calculateExercises;

@@ -1,4 +1,4 @@
-export const getParsedNumber = (arg: string | number): number => {
+export const getParsedNumber = (arg: any): number => {
   if (!arg) throw new Error('Argument is missing');
 
   const parsedNumber = Number(arg);
