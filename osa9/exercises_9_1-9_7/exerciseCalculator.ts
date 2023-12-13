@@ -46,7 +46,10 @@ const calculateExercises = (target: number, hours: number[]): exerciseHours | un
       average,
     };
   } catch (error) {
-    console.log(error.message);
+    let message = 'Error calculating exercises';
+    if (error instanceof Error) message = error.message;
+
+    console.log(message);
     return undefined;
   }
 };
@@ -63,7 +66,11 @@ const calculateWithArguments = () => {
 
     console.log(calculateExercises(target, hours));
   } catch (error) {
-    console.log(error.message);
+    let message = 'Error calculating exercises';
+    if (error instanceof Error) message = error.message;
+
+    console.log(message);
+    return undefined;
   }
 };
 

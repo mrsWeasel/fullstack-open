@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getParsedNumber = (arg: any): number => {
   if (!arg) throw new Error('Argument is missing');
 

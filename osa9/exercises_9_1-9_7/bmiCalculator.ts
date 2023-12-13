@@ -17,7 +17,10 @@ export const calculateBmi = (
 
     return 'Overweight';
   } catch (error) {
-    console.log(error.message);
+    let message = 'Error calculating BMI';
+    if (error instanceof Error) message = error.message;
+
+    console.log(message);
     return undefined;
   }
 };
