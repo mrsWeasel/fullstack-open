@@ -5,3 +5,4 @@
 osa3
 **/.env
 **/requests
+**/build/**
