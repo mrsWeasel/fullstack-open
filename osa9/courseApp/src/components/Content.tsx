@@ -1,7 +1,5 @@
-interface CoursePart {
-  name: string;
-  exerciseCount: number;
-}
+import { CoursePart } from "../App";
+import Part from "./Part";
 
 interface Props {
   courseParts: CoursePart[];
@@ -11,9 +9,7 @@ const Content: React.FC<Props> = ({ courseParts }) => {
   return (
     <div>
       {courseParts?.map((cp) => (
-        <p>
-          {cp.name} {cp.exerciseCount}
-        </p>
+        <Part coursePart={cp} />
       ))}
     </div>
   );
