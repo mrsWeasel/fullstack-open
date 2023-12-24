@@ -4,18 +4,24 @@ import { v4 as uuid } from "uuid";
 import { parseGender, parseString } from "../util/validators";
 
 export const getPatients = (): NonSensitivePatient[] => {
-  return data.map(({ id, name, dateOfBirth, gender, occupation }) => ({
+  return data.map(({ id, name, dateOfBirth, gender, occupation, entries }) => ({
     id,
     name,
     dateOfBirth,
     gender,
     occupation,
+    entries,
   }));
+};
+
+export const getPatientById = (id: string): NonSensitivePatient | undefined => {
+  return data.find((p) => p.id === id);
 };
 
 export const addPatient = (patient: NewPatient): Patient => {
   return {
     id: uuid(),
+    entries: [],
     ...patient,
   };
 };
