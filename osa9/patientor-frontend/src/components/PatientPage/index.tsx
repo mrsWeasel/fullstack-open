@@ -3,6 +3,7 @@ import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import TransgenderIcon from "@mui/icons-material/Transgender";
 import { Gender, Patient } from "../../types";
+import { Box } from "@mui/material";
 
 interface Props {
   patients: Patient[];
@@ -44,6 +45,23 @@ const PatientPage = ({ patients }: Props) => {
       {patient.ssn && <p>SSN: {patient.ssn}</p>}
       {patient.dateOfBirth && <p>Date of birth: {patient.dateOfBirth}</p>}
       <p>Occupation: {patient.occupation}</p>
+      {patient.entries && patient.entries.length > 0 && <h3>Entries</h3>}
+      {patient.entries.map((e) => (
+        <Box
+          sx={{
+            border: 1,
+            borderColor: "grey.300",
+            borderRadius: 1,
+            my: 1,
+            px: 1,
+          }}
+        >
+          <p>{e.description}</p>
+          {e.diagnosisCodes && e.diagnosisCodes.length > 0 && (
+            <p>{e.diagnosisCodes.join(", ")}</p>
+          )}
+        </Box>
+      ))}
     </div>
   );
 };
