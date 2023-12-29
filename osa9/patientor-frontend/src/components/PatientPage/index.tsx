@@ -2,11 +2,12 @@ import { useParams } from "react-router-dom";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import TransgenderIcon from "@mui/icons-material/Transgender";
-import { Gender, Patient } from "../../types";
+import { Diagnosis, Gender, Patient } from "../../types";
 import { Box } from "@mui/material";
 
 interface Props {
   patients: Patient[];
+  diagnoses: Diagnosis[];
 }
 
 /**
@@ -18,7 +19,7 @@ const assertNever = (value: never): never => {
   );
 };
 
-const PatientPage = ({ patients }: Props) => {
+const PatientPage = ({ patients, diagnoses }: Props) => {
   const { id } = useParams();
 
   const patient = patients.find((p) => p.id === id);
@@ -48,6 +49,7 @@ const PatientPage = ({ patients }: Props) => {
       {patient.entries && patient.entries.length > 0 && <h3>Entries</h3>}
       {patient.entries.map((e) => (
         <Box
+          key={e.id}
           sx={{
             border: 1,
             borderColor: "grey.300",
@@ -58,7 +60,17 @@ const PatientPage = ({ patients }: Props) => {
         >
           <p>{e.description}</p>
           {e.diagnosisCodes && e.diagnosisCodes.length > 0 && (
-            <p>{e.diagnosisCodes.join(", ")}</p>
+            <ul>
+              {e.diagnosisCodes.map((code) => {
+                const diagnosis = diagnoses.find((d) => d.code === code);
+                if (!diagnosis) return null;
+                return (
+                  <li key={code}>
+                    {code} {diagnosis.name}
+                  </li>
+                );
+              })}
+            </ul>
           )}
         </Box>
       ))}
