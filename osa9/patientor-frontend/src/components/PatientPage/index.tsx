@@ -4,20 +4,13 @@ import MaleIcon from "@mui/icons-material/Male";
 import TransgenderIcon from "@mui/icons-material/Transgender";
 import { Diagnosis, Gender, Patient } from "../../types";
 import { Box } from "@mui/material";
+import { assertNever } from "../../utils";
+import EntryDetails from "./EntryDetails";
 
 interface Props {
   patients: Patient[];
   diagnoses: Diagnosis[];
 }
-
-/**
- * Helper function for exhaustive type checking
- */
-const assertNever = (value: never): never => {
-  throw new Error(
-    `Unhandled discriminated union member: ${JSON.stringify(value)}`
-  );
-};
 
 const PatientPage = ({ patients, diagnoses }: Props) => {
   const { id } = useParams();
@@ -46,6 +39,7 @@ const PatientPage = ({ patients, diagnoses }: Props) => {
       {patient.ssn && <p>SSN: {patient.ssn}</p>}
       {patient.dateOfBirth && <p>Date of birth: {patient.dateOfBirth}</p>}
       <p>Occupation: {patient.occupation}</p>
+
       {patient.entries && patient.entries.length > 0 && <h3>Entries</h3>}
       {patient.entries.map((e) => (
         <Box
@@ -58,20 +52,7 @@ const PatientPage = ({ patients, diagnoses }: Props) => {
             px: 1,
           }}
         >
-          <p>{e.description}</p>
-          {e.diagnosisCodes && e.diagnosisCodes.length > 0 && (
-            <ul>
-              {e.diagnosisCodes.map((code) => {
-                const diagnosis = diagnoses.find((d) => d.code === code);
-                if (!diagnosis) return null;
-                return (
-                  <li key={code}>
-                    {code} {diagnosis.name}
-                  </li>
-                );
-              })}
-            </ul>
-          )}
+          <EntryDetails entry={e} diagnoses={diagnoses} />
         </Box>
       ))}
     </div>
