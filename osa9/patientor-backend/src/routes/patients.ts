@@ -4,6 +4,7 @@ import {
   addPatient,
   toNewPatient,
   getPatientById,
+  toEntry,
 } from "../services/patientService";
 import { parseString } from "../util/validators";
 
@@ -29,6 +30,25 @@ router.post("/", (req, res) => {
     res.json(newPatient);
   } catch (error) {
     res.status(400).send({ error: "error adding patient" });
+  }
+});
+
+router.post("/:id/entries", (req, res) => {
+  try {
+    const id = parseString(req.params.id);
+    const patient = getPatientById(id);
+    const entries = patient?.entries ?? [];
+
+    const newEntry = toEntry(req.body);
+    console.log(newEntry);
+    if (patient) {
+      res.send({ ...patient, entries: [...entries, newEntry] });
+    } else {
+      res.status(404).send({ error: "no patient found" });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(400).send({ error: "error adding entry" });
   }
 });
 
