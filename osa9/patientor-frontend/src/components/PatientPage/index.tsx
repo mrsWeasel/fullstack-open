@@ -3,17 +3,21 @@ import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import TransgenderIcon from "@mui/icons-material/Transgender";
 import { Diagnosis, Gender, Patient } from "../../types";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { assertNever } from "../../utils";
 import EntryDetails from "./EntryDetails";
+import AddEntryModal from "../AddEntryModal";
+import { useState } from "react";
 
 interface Props {
   patients: Patient[];
   diagnoses: Diagnosis[];
+  setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
 }
 
-const PatientPage = ({ patients, diagnoses }: Props) => {
+const PatientPage = ({ patients, diagnoses, setPatients }: Props) => {
   const { id } = useParams();
+  const [addEntryModalOpen, setAddEntryModalOpen] = useState<boolean>(false);
 
   const patient = patients.find((p) => p.id === id);
   if (!patient) return null;
@@ -33,6 +37,20 @@ const PatientPage = ({ patients, diagnoses }: Props) => {
 
   return (
     <div>
+      <AddEntryModal
+        patient={patient}
+        modalOpen={addEntryModalOpen}
+        onClose={() => setAddEntryModalOpen(false)}
+        onSubmit={(updatedPatient) => {
+          console.log(updatedPatient);
+          setPatients(
+            patients.map((p) =>
+              p.id === updatedPatient.id ? updatedPatient : p
+            )
+          );
+          setAddEntryModalOpen(false);
+        }}
+      />
       <h2>
         {patient.name} {getGenderIcon(patient.gender)}
       </h2>
@@ -40,7 +58,14 @@ const PatientPage = ({ patients, diagnoses }: Props) => {
       {patient.dateOfBirth && <p>Date of birth: {patient.dateOfBirth}</p>}
       <p>Occupation: {patient.occupation}</p>
 
-      {patient.entries && patient.entries.length > 0 && <h3>Entries</h3>}
+      <h3>Entries</h3>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => setAddEntryModalOpen(true)}
+      >
+        Add entry
+      </Button>
       {patient.entries.map((e) => (
         <Box
           key={e.id}

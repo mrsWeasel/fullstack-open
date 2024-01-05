@@ -40,7 +40,7 @@ router.post("/:id/entries", (req, res) => {
     const entries = patient?.entries ?? [];
 
     const newEntry = toEntry(req.body);
-    console.log(newEntry);
+
     if (patient) {
       res.send({ ...patient, entries: [...entries, newEntry] });
     } else {

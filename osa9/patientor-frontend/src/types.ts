@@ -1,3 +1,8 @@
+// From: https://github.com/microsoft/TypeScript/issues/39556#issuecomment-656925230
+export type UnionOmit<T, K extends string | number | symbol> = T extends unknown
+  ? Omit<T, K>
+  : never;
+
 export interface Diagnosis {
   code: string;
   name: string;
@@ -67,3 +72,5 @@ export interface Patient {
 }
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
+
+export type EntryFormValues = UnionOmit<Entry, "id">;
