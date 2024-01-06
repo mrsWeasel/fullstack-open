@@ -47,8 +47,11 @@ router.post("/:id/entries", (req, res) => {
       res.status(404).send({ error: "no patient found" });
     }
   } catch (e) {
-    console.log(e);
-    res.status(400).send({ error: "error adding entry" });
+    let errorMessage = "error adding entry";
+    if (e instanceof Error) {
+      errorMessage = e.message;
+    }
+    res.status(400).send({ error: errorMessage });
   }
 });
 

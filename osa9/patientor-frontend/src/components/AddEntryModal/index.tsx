@@ -23,22 +23,28 @@ import {
 } from "../../types";
 import { SyntheticEvent, useState } from "react";
 import patientService from "../../services/patients";
+import axios from "axios";
 
 interface Props {
   modalOpen: boolean;
   onClose: () => void;
-  onSubmit: (patient: Patient) => void;
+  updatePatients: (patient: Patient) => void;
   patient: Patient;
 }
 
-const AddEntryModal = ({ modalOpen, onClose, onSubmit, patient }: Props) => {
+const AddEntryModal = ({
+  modalOpen,
+  onClose,
+  updatePatients,
+  patient,
+}: Props) => {
   const [error, setError] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [specialist, setSpecialist] = useState("");
   const [diagnosisCodes, setDiagnosisCodes] = useState<
-    Array<Diagnosis["code"]> | undefined
-  >(undefined);
+    Array<Diagnosis["code"]>
+  >([]);
   const [healthCheckRating, setHealthCheckRating] = useState(
     HealthCheckRating.Healthy
   );
@@ -55,14 +61,12 @@ const AddEntryModal = ({ modalOpen, onClose, onSubmit, patient }: Props) => {
     };
     try {
       const updatedPatient = await patientService.postEntry(newEntry, patient);
-      onSubmit(updatedPatient);
+      updatePatients(updatedPatient);
     } catch (e) {
-      if (e instanceof Error) {
-        console.error(e.message);
-        setError(e.message);
+      if (axios.isAxiosError(e)) {
+        setError(e.response?.data?.error || "Error adding entry");
       } else {
-        console.error(e);
-        setError("Unknown error when trying to add entry");
+        setError("Error adding entry");
       }
     }
   };

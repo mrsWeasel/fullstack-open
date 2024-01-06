@@ -88,7 +88,6 @@ export const toEntry = (object: unknown): Entry => {
     "diagnosisCodes" in object ? parseDiagnosisCodes(object) : [];
 
   if (type === "HealthCheck" && "healthCheckRating" in object) {
-    console.log("health check type");
     return {
       ...baseEntry,
       type,

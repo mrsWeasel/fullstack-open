@@ -41,12 +41,9 @@ const PatientPage = ({ patients, diagnoses, setPatients }: Props) => {
         patient={patient}
         modalOpen={addEntryModalOpen}
         onClose={() => setAddEntryModalOpen(false)}
-        onSubmit={(updatedPatient) => {
-          console.log(updatedPatient);
+        updatePatients={(newPatient) => {
           setPatients(
-            patients.map((p) =>
-              p.id === updatedPatient.id ? updatedPatient : p
-            )
+            patients.map((p) => (p.id === newPatient.id ? newPatient : p))
           );
           setAddEntryModalOpen(false);
         }}
