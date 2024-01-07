@@ -7,6 +7,7 @@ import {
   parseEntryHealthCheckRating,
   parseEntryType,
   parseGender,
+  parseSickLeave,
   parseString,
 } from "../util/validators";
 
@@ -102,6 +103,9 @@ export const toEntry = (object: unknown): Entry => {
       type,
       diagnosisCodes,
       employerName: parseString(object.employerName),
+      ...("sickLeave" in object && {
+        sickLeave: parseSickLeave(object.sickLeave),
+      }),
     };
   }
 

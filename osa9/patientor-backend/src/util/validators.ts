@@ -5,6 +5,7 @@ import {
   HealthCheckEntry,
   HealthCheckRating,
   HospitalEntry,
+  OccupationalHealthCareEntry,
 } from "../types";
 
 export const isNumber = (param: unknown): param is number => {
@@ -105,6 +106,24 @@ export const parseEntryDischarge = (
   }
 
   return object as HospitalEntry["discharge"];
+};
+
+export const parseSickLeave = (
+  object: unknown
+): OccupationalHealthCareEntry["sickLeave"] => {
+  if (!object || typeof object !== "object") {
+    throw new Error("data is missing or invalid");
+  }
+
+  if (!("startDate" in object && "endDate" in object)) {
+    throw new Error("data is missing or invalid");
+  }
+
+  if (!isString(object.startDate) || !isString(object.endDate)) {
+    throw new Error("data is missing or invalid");
+  }
+
+  return object as OccupationalHealthCareEntry["sickLeave"];
 };
 
 export const parseDiagnosisCodes = (
