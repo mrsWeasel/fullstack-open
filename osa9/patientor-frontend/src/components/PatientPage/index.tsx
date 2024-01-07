@@ -39,6 +39,7 @@ const PatientPage = ({ patients, diagnoses, setPatients }: Props) => {
     <div>
       <AddEntryModal
         patient={patient}
+        diagnoses={diagnoses}
         modalOpen={addEntryModalOpen}
         onClose={() => setAddEntryModalOpen(false)}
         updatePatients={(newPatient) => {
